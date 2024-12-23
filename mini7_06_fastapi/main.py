@@ -34,11 +34,14 @@ def hospital_by_module(req: EmergencyRequest):
     conf['naver_count'] = req.navercount
     conf['haversine_count'] = req.navercount * 2
     result = project6.proc_pipeline2(req.text, (req.lat, req.lon))
-    
-    response = []
+    response = {
+        'emergencyGrade': result['predict'][0] + 1,
+        'description': 'temp data',
+        'dutyList': []
+    }
     for data in result['duty']:
         dutyTel = data['dutyTel'].split(',')
-        response.append({
+        response['dutyList'].append({
             'hospitalName': data['duty_name'],
             'address': data['duty_addr'],
             'emergencyMedicalInstitutionType': data['dutyEmclsName'],
