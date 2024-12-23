@@ -1,16 +1,27 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header('Dashboard')">
 </head>
-<body>
-<form action="recommend_hospital" enctype="application/x-www-form-urlencoded">
+<body class="sb-nav-fixed">
+<!-- Top Navigation -->
+<nav th:replace="fragments/nav :: topnav"></nav>
 
-    <input type="text" name="request" value="교통사고가 났어요 머리에 피가 많이나고 있습니다.">
-    <input type="text" name="latitude" value="37.538435245262626">
-    <input type="text" name="longitude" value="126.98982802695484">
-    <input type="submit" value="Submit">
-</form>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <!-- Side Navigation -->
+        <nav th:replace="fragments/nav :: sidenav"></nav>
+    </div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Dashboard</h1>
+                <!-- Your main content here -->
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+</div>
 </body>
 </html>

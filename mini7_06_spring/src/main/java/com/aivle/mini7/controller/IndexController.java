@@ -1,12 +1,13 @@
 package com.aivle.mini7.controller;
 
 import com.aivle.mini7.client.api.FastApiClient;
+import com.aivle.mini7.client.dto.HospitalRequest;
 import com.aivle.mini7.client.dto.HospitalResponse;
-import com.aivle.mini7.service.LogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,26 +19,27 @@ import java.util.List;
 public class IndexController {
 
     private final FastApiClient fastApiClient;
-    private final LogService logService;
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "emergency";
     }
 
-    @GetMapping("/recommend_hospital")
-    public ModelAndView recommend_hospital(@RequestParam("request") String request, @RequestParam("latitude") double latitude, @RequestParam("longitude") double longitude) {
-
+    @PostMapping("/recommend_hospital")
+    public ModelAndView recommend_hospital(@RequestParam("navercount") Integer navercount,
+                                           @RequestParam("text") String text,
+                                           @RequestParam("lat") Double lat,
+                                           @RequestParam("lon") Double lon) {
+        // HospitalRequest 객체 생성
+        HospitalRequest request = new HospitalRequest(navercount, text, lat, lon);
 
 //        FastApiClient 를 호출한다.
-        List<HospitalResponse> hospitalList = fastApiClient.getHospital(request, latitude, longitude);
+        List<HospitalResponse> hospitalList = fastApiClient.getHospital(request);
         log.info("hospital: {}", hospitalList);
-
-//        emclass는 AI의 api를 고치기 힘들어서 일단 하드코딩으로 마무리한다.
-        if(hospitalList !=null){
-            logService.saveLog(hospitalList, request, latitude, longitude,4);
+        if(hospitalList.isEmpty()){
+            //리스트 없을 때
+            //근데 팀과제는 1~3- 병원리스트. 4-병원추천. 5-건강증진멘트
         }
-
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("recommend_hospital");
