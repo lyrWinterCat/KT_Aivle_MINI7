@@ -20,6 +20,8 @@ public class IndexController {
     private final FastApiClient fastApiClient;
     private final LogService logService;
 
+    
+
     @GetMapping("/")
     public String index() {
         return "index";
