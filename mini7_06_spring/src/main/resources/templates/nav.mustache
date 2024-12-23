@@ -1,8 +1,6 @@
-<!-- fragments/nav.html -->
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<body>
-<nav th:fragment="topnav" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+
+<!-- nav.mustache -->
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="emergency.html">Start Bootstrap!!</a>
     <!-- Sidebar Toggle-->
@@ -27,22 +25,3 @@
         </li>
     </ul>
 </nav>
-
-<nav th:fragment="sidenav" class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-    <div class="sb-sidenav-menu">
-        <div class="nav">
-            <div class="sb-sidenav-menu-heading">Core</div>
-            <a class="nav-link" href="emergency.html">
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                Dashboard
-            </a>
-            <!-- Rest of your sidenav content -->
-        </div>
-    </div>
-    <div class="sb-sidenav-footer">
-        <div class="small">Logged in as:</div>
-        Start Bootstrap
-    </div>
-</nav>
-</body>
-</html>
