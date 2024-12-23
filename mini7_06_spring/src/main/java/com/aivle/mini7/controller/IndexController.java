@@ -33,6 +33,13 @@ public class IndexController {
         return "index";
     }
 
+    @GetMapping("/dy")
+    public String dy(Model model) {
+        model.addAttribute("title", "Bootstrap Test Page");
+        model.addAttribute("username", "LYR");
+        return "emergency";
+    }
+
     @PostMapping("/recommend_hospital")
     public ModelAndView recommend_hospital(@RequestParam("navercount") Integer navercount,
                                            @RequestParam("text") String text,
