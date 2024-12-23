@@ -18,12 +18,12 @@ public class BoardService {
 		return boardRepository.findAll(pageable);
 	}
 
-	public void saveBoard(String boardTitle, String boardContent, String username, String password) {
+	public void saveBoard(String title, String content, String username, String password) {
 		// All-Args 생성자로 엔티티 생성
 		Board board = new Board(
 				null, // boardId는 자동 생성
-				boardTitle,
-				boardContent,
+				title,
+				content,
 				username,
 				password,
 				null, // createTime은 @CreationTimestamp로 자동 설정

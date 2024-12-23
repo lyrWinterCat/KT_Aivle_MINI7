@@ -20,10 +20,10 @@ public class Board {
 	private Long boardId;
 
 	@Column(nullable = false)
-	private String boardTitle;
+	private String title;
 
 	@Column(nullable = false, columnDefinition = "TEXT")
-	private String boardContent;
+	private String content;
 
 	@Column(nullable = false)
 	private String username;

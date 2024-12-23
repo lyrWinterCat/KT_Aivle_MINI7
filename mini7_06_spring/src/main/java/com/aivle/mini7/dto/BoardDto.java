@@ -8,8 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 public class BoardDto {
 	private Long boardId;
-	private String boardTitle;
-	private String boardContent;
+	private String title;
+	private String content;
 	private String createTime;
 	private String updateTime;
 	private String password;

@@ -22,21 +22,23 @@ public class BoardController {
 	// 새 글 작성 페이지
 	@GetMapping("/new")
 	public String newBoardForm(Model model) {
-		model.addAttribute("boardTitle", "Create New Board");
+		model.addAttribute("title", "Create New Board");
+		model.addAttribute("content", "Create New content");
+		model.addAttribute("username", "User Name");
+		model.addAttribute("password", "Password");
 		return "board/new";
 	}
-
 
 	// 새 글 작성 처리
 	@PostMapping("/create")
 	public String createBoard(
-			@RequestParam String boardTitle,
-			@RequestParam String boardContent,
+			@RequestParam String title,
+			@RequestParam String content,
 			@RequestParam String username,
 			@RequestParam String password
 	) {
 		// 서비스 계층 호출
-		boardService.saveBoard(boardTitle, boardContent, username, password);
+		boardService.saveBoard(title, content, username, password);
 		return "redirect:/board/list";
 	}
 
