@@ -106,4 +106,18 @@
             color: white;
         }
 
+        .row.mb-3.align-items-center .col-auto {
+            flex-shrink: 0; /* 버튼이 줄어들지 않도록 설정 */
+            margin-top: 10px; /* 위쪽 마진 추가 */
+            margin-bottom: 10px; /* 아래쪽 마진 추가 */
+        }
+
+
+
+        .row.mb-3.align-items-center .col-auto select {
+            width: 150px; /* 콤보박스 너비 조정 */
+        }
+
+
+
 /* ... 나머지 스타일 내용 ... */

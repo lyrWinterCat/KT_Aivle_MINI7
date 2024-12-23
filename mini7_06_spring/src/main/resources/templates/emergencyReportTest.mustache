@@ -20,14 +20,38 @@
                         <input type="hidden" class="form-control" id="navercount" name="navercount" value="3" required>
                         <label for="text" class="form-label subTitle">상황 설명</label>
                         <textarea class="form-control custom_box" id="text" name="text" rows="3" required></textarea>
-                        <div class="row mb-3">
+
+                        <!-- 위도와 경도 입력 박스 및 버튼 추가 -->
+                        <div class="row mb-3 align-items-center">
                             <div class="col">
-                                <input type="hidden" class="form-control custom_box" id="lat" name="lat" value="" required>
+                                <label for="lat" class="form-label subTitle">위도</label>
+                                <input type="text" class="form-control custom_box" id="lat" name="lat" placeholder="위도를 입력하세요" required>
                             </div>
                             <div class="col">
-                                <input type="hidden" class="form-control custom_box" id="lon" name="lon" value="" required>
+                                <label for="lon" class="form-label subTitle">경도</label>
+                                <input type="text" class="form-control custom_box" id="lon" name="lon" placeholder="경도를 입력하세요" required>
                             </div>
                         </div>
+                        <div class="col-auto mb-4">
+                            <button type="button" class="btn btn-success" id="getLocation">현재 위치 가져오기</button>
+                        </div>
+
+                        <!-- 추천 받을 병원 개수 선택하는 콤보박스 추가 -->
+                        <div class="row mb-3 align-items-center">
+                            <div class="col">
+                                <label for="hospitalCount" class="form-label subTitle">추천받을 병원 개수</label>
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-control custom_box" id="hospitalCount" name="hospitalCount">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn w-100 subTitle customButton">제출</button>
                     </form>
                 </div>
