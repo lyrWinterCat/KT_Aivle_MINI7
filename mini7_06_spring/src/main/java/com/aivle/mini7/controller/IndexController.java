@@ -34,12 +34,12 @@ public class IndexController {
         HospitalRequest request = new HospitalRequest(navercount, text, lat, lon);
 
 //        FastApiClient 를 호출한다.
-        List<HospitalResponse> hospitalList = fastApiClient.getHospital(request);
+        HospitalResponse hospitalList = fastApiClient.getHospital(request);
         log.info("hospital: {}", hospitalList);
-        if(hospitalList.isEmpty()){
-            //리스트 없을 때
-            //근데 팀과제는 1~3- 병원리스트. 4-병원추천. 5-건강증진멘트
-        }
+//        if(hospitalList.isEmpty()){
+//            //리스트 없을 때
+//            //근데 팀과제는 1~3- 병원리스트. 4-병원추천. 5-건강증진멘트
+//        }
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("recommend_hospital");
