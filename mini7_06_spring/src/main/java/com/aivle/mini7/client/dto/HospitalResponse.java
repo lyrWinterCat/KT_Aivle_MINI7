@@ -7,14 +7,14 @@ import lombok.Setter;
 @Setter
 @Getter
 public class HospitalResponse {
-    private String hospitalName;
-    private String address;
-    private String emergencyMedicalInstitutionType;
-    private String phoneNumber1;
-    private String phoneNumber3;
-    private String request;
-    private double distance;
 
+    private String duty_name;
+    private String duty_addr;
+    private Double wgs84lon;
+    private Double wgs84lat;
+    private String dutyTel;
+    private String dutyEmclsName;
+    private Double road_distance;
 }
 
 
