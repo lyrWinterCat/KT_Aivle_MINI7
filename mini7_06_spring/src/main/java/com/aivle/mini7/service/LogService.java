@@ -1,5 +1,6 @@
 package com.aivle.mini7.service;
 
+import com.aivle.mini7.client.dto.HospitalInfoResponse;
 import com.aivle.mini7.client.dto.HospitalResponse;
 import com.aivle.mini7.dto.LogDto;
 import com.aivle.mini7.model.Log;
@@ -49,21 +50,22 @@ public class LogService {
         int count = 1;
         for(HospitalResponse hospitalResponse : hospitalResponseList) {
             log.info("hospitalResponse: {}", hospitalResponse);
+            HospitalInfoResponse data =  hospitalResponse.getDutyList().get(count);
             switch (count) {
                 case 1:
-                    hospitalLog.setHospital1(hospitalResponse.getHospitalName());
-                    hospitalLog.setAddr1(hospitalResponse.getAddress());
-                    hospitalLog.setTel1(hospitalResponse.getPhoneNumber1());
+                    hospitalLog.setHospital1(data.getHospitalName());
+                    hospitalLog.setAddr1(data.getAddress());
+                    hospitalLog.setTel1(data.getPhoneNumber1());
                     break;
                 case 2:
-                    hospitalLog.setHospital2(hospitalResponse.getHospitalName());
-                    hospitalLog.setAddr2(hospitalResponse.getAddress());
-                    hospitalLog.setTel2(hospitalResponse.getPhoneNumber1());
+                    hospitalLog.setHospital2(data.getHospitalName());
+                    hospitalLog.setAddr2(data.getAddress());
+                    hospitalLog.setTel2(data.getPhoneNumber1());
                     break;
                 case 3:
-                    hospitalLog.setHospital3(hospitalResponse.getHospitalName());
-                    hospitalLog.setAddr3(hospitalResponse.getAddress());
-                    hospitalLog.setTel3(hospitalResponse.getPhoneNumber1());
+                    hospitalLog.setHospital3(data.getHospitalName());
+                    hospitalLog.setAddr3(data.getAddress());
+                    hospitalLog.setTel3(data.getPhoneNumber1());
                     break;
             }
             count++;
