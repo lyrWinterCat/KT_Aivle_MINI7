@@ -1,2 +1,3 @@
 __pycache__
 .idea
+fine_tuned_bert/model.safetensors
