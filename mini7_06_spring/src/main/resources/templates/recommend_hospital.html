@@ -45,6 +45,7 @@
             <th scope="col">경도</th>
             <th scope="col">위도</th>
             <th scope="col">연락처</th>
+            <th scope="col">연락처2</th>
             <th scope="col">병원유형</th>
             <th scope="col">거리</th>
         </tr>
@@ -53,13 +54,14 @@
         <!-- 병원 목록 반복 -->
         <tr th:each="hospital, iterStat : ${hospitalList}">
             <td th:text="${iterStat.index + 1}"></td>
-            <td th:text="${hospital.duty_name}"></td>
-            <td th:text="${hospital.duty_addr}"></td>
-            <td th:text="${hospital.wgs84lon}"></td>
-            <td th:text="${hospital.wgs84lat}"></td>
-            <td th:text="${hospital.dutyTel}"></td>
-            <td th:text="${hospital.dutyEmclsName}"></td>
-            <td th:text="${hospital.road_distance} + ' km'"></td>
+            <td th:text="${hospital.hospitalName}"></td>
+            <td th:text="${hospital.address}"></td>
+            <td th:text="${hospital.longitude}"></td>
+            <td th:text="${hospital.latitude}"></td>
+            <td th:text="${hospital.phoneNumber1}"></td>
+            <td th:text="${hospital.phoneNumber3}"></td>
+            <td th:text="${hospital.emergencyMedicalInstitutionType}"></td>
+            <td th:text="${hospital.distance} + ' km'"></td>
         </tr>
         </tbody>
     </table>
