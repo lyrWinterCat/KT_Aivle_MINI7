@@ -34,9 +34,17 @@ def hospital_by_module(req: EmergencyRequest):
     conf['naver_count'] = req.navercount
     conf['haversine_count'] = req.navercount * 2
     result = project6.proc_pipeline2(req.text, (req.lat, req.lon))
+    
+    emergencyGrade = result['predict'][0] + 1
+    if emergencyGrade <= 3:
+        description = project6.text_summary(req.text, 'summary_emergency')
+    else:
+        description = project6.text_summary(req.text, 'summary_not_emergency')
+        
+    
     response = {
-        'emergencyGrade': result['predict'][0] + 1,
-        'description': 'temp data',
+        'emergencyGrade': emergencyGrade,
+        'description': description,
         'dutyList': []
     }
     for data in result['duty']:
