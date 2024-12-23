@@ -1,0 +1,40 @@
+{{> header}}
+{{> nav}}
+
+<link rel="stylesheet" href="/css/emergency.css">
+<script src="/js/emergency.js"></script>
+
+<div id="layoutSidenav">
+    {{> sidenav}}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container">
+                <div class="form-container">
+                    <h2 class="text-center title lexend-deca-Medium">Emergency Call</h2>
+                    <div id="record" class="text-center mb-3">
+                        <div class="Rec" id="Rec">
+                            <i class="fas fa-microphone fa-3x"></i>
+                        </div>
+                    </div>
+                    <form action="recommend_hospital" method="post" enctype="application/x-www-form-urlencoded">
+                        <input type="hidden" class="form-control" id="navercount" name="navercount" value="3" required>
+                        <label for="text" class="form-label subTitle">상황 설명</label>
+                        <textarea class="form-control custom_box" id="text" name="text" rows="3" required></textarea>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <input type="hidden" class="form-control custom_box" id="lat" name="lat" value="" required>
+                            </div>
+                            <div class="col">
+                                <input type="hidden" class="form-control custom_box" id="lon" name="lon" value="" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn w-100 subTitle customButton">제출</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        {{> footer}}
+    </div>
+</div>
+</body>
+</html>

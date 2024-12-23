@@ -26,6 +26,13 @@ public class IndexController {
         return "emergencyReport";
     }
 
+    @GetMapping("/emergencyReport")
+    public String emergencyReport(Model model) {
+        model.addAttribute("title", "병원 추천 요청"); // title 변수를 추가
+        model.addAttribute("username", "LYR");
+        return "emergencyReportTest"; // templates/emergencyReportTest.mustache
+    }
+
     @GetMapping("/mustache")
     public String home(Model model) {
         model.addAttribute("title", "Bootstrap Test Page");
