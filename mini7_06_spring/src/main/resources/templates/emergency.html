@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>병원 추천 요청</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/49d19d6510.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #0b3a6a; /* 연한 배경색 */
+            background-image: url(https://greeense.github.io/portfolio/image/hospital.jpg); /* 배경 이미지 URL 추가 필요 */
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100vw;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column; /* 세로 방향 정렬 */
+            justify-content: center;
+            align-items: center;
+
+            background-color: white;
+            border-radius: 2em;
+            padding: 25px 30px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+        }
+
+        form {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .title {
+            font-size: 180%;
+            color: rgb(22, 51, 115);
+            font-weight: 1000;
+            margin-bottom: 20px; /* 제목 하단 여백 추가 */
+        }
+
+        .subTitle {
+            font-size: 90%;
+            font-weight: 800;
+            margin-bottom: 15px; /* 서브 제목 하단 여백 추가 */
+        }
+
+        .lexend-deca-Medium {
+            font-family: "Lexend Deca", serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        .custom_box {
+            border: 2px solid rgba(177, 193, 207, 0.55);
+            margin-bottom: 10px; /* 입력 박스 하단 여백 추가 */
+        }
+
+        .customButton {
+            color: white;
+            background-color: rgb(0, 120, 233);
+            border-radius: 1em;
+            padding: 10px; /* 버튼 패딩 추가 */
+        }
+
+        .customButton:hover {
+            color: white;
+            background-color: rgb(0, 63, 125);
+        }
+
+        .Rec {
+            background-color: rgb(158, 9, 9);
+            width:120px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgb(158,9,9);
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+        .Rec:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+        .Rec:active {
+            background-color: #a93226;
+            border-color: #a93226;
+            transform: scale(0.95);
+        }
+        .recording {
+            background-color: #c0392b;
+            border-color: #c0392b;
+            animation : changesize 1s linear infinite;
+            box-shadow: 0 4px 10px rgba(147, 2, 2, 0.792); /
+        }
+        @keyframes changesize {
+            60% {
+                transform: scale(1.05);
+            }
+        }
+        .fa-microphone {
+            color: white;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            //------------ 현재위치 기반 위도경도 입력 기능 -----------
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    console.log(latitude, longitude);
+                    const lat = document.querySelector("#lat");
+                    const lon = document.querySelector("#lon");
+
+                    lat.value = latitude;
+                    lon.value = longitude;
+                });
+            } else {
+                alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
+            }
+
+            //-------------     음성인식to텍스트 기능(https만 가능)      ------------
+            // 녹음버튼객체선택
+            const RecBtn = document.querySelector("#Rec");
+            const resultText = document.querySelector("#text");
+            RecBtn.addEventListener("click", (event) => {
+                record();
+                console.log("dd"); // 클릭 시 콘솔에 "dd" 출력
+            });
+
+            // 음성인식 객체
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+
+            recognition.lang = 'ko-KR';
+            recognition.interimResults = false; //중간결과반영여부
+            recognition.maxAlternatives = 1; //음성인식 결과
+
+            function record(){
+                recognition.start();//녹음 시작
+                RecBtn.classList.toggle("recording");
+                console.log("Voice Record Start");
+            }
+            //음성인식 결과처리(텍스트변환)
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                console.log('인식된 텍스트:', transcript);
+                resultText.value = transcript;
+            };
+
+            // 음성 인식 오류 처리
+            recognition.onerror = (event) => {
+                console.error('음성 인식 오류:', event.error);
+                resultText.value = "오류발생";
+                RecBtn.classList.toggle("recording");
+            };
+
+            // 음성 인식 종료 후 처리
+            recognition.onend = () => {
+                console.log('음성 인식 종료');
+                RecBtn.classList.toggle("recording");
+            };
+        });
+
+
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="form-container">
+        <h2 class="text-center title lexend-deca-Medium">Emergency Call</h2>
+        <div id="record" class="text-center mb-3">
+            <div class="Rec" id="Rec">
+                <i class="fas fa-microphone fa-3x"></i> <!-- 아이콘 크기 조정 -->
+            </div>
+        </div>
+        <form action="recommend_hospital" method="post" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" class="form-control" id="navercount" name="navercount" value="3" required>
+            <label for="text" class="form-label subTitle">상황 설명</label>
+            <textarea class="form-control custom_box" id="text" name="text" rows="3" required></textarea>
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="hidden" class="form-control custom_box" id="lat" name="lat" value="" required>
+                </div>
+                <div class="col">
+                    <input type="hidden" class="form-control custom_box" id="lon" name="lon" value="" required>
+                </div>
+            </div>
+            <button type="submit" class="btn w-100 subTitle customButton">제출</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
