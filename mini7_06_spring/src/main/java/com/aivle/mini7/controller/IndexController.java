@@ -21,12 +21,12 @@ public class IndexController {
 
     private final FastApiClient fastApiClient;
 
-//    @GetMapping("/")
-//    public String index() {
-//        return "index";
-//    }
-
     @GetMapping("/")
+    public String index() {
+        return "emergencyReport";
+    }
+
+    @GetMapping("/mustache")
     public String home(Model model) {
         model.addAttribute("title", "Bootstrap Test Page");
         model.addAttribute("username", "LYR");
