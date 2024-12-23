@@ -51,19 +51,19 @@ public class LogService {
             log.info("hospitalResponse: {}", hospitalResponse);
             switch (count) {
                 case 1:
-                    hospitalLog.setHospital1(hospitalResponse.getHospitalName());
-                    hospitalLog.setAddr1(hospitalResponse.getAddress());
-                    hospitalLog.setTel1(hospitalResponse.getPhoneNumber1());
+                    hospitalLog.setHospital1(hospitalResponse.getDuty_name());
+                    hospitalLog.setAddr1(hospitalResponse.getDuty_addr());
+                    hospitalLog.setTel1(hospitalResponse.getDutyTel());
                     break;
                 case 2:
-                    hospitalLog.setHospital2(hospitalResponse.getHospitalName());
-                    hospitalLog.setAddr2(hospitalResponse.getAddress());
-                    hospitalLog.setTel2(hospitalResponse.getPhoneNumber1());
+                    hospitalLog.setHospital2(hospitalResponse.getDuty_name());
+                    hospitalLog.setAddr2(hospitalResponse.getDuty_addr());
+                    hospitalLog.setTel2(hospitalResponse.getDutyTel());
                     break;
                 case 3:
-                    hospitalLog.setHospital3(hospitalResponse.getHospitalName());
-                    hospitalLog.setAddr3(hospitalResponse.getAddress());
-                    hospitalLog.setTel3(hospitalResponse.getPhoneNumber1());
+                    hospitalLog.setHospital3(hospitalResponse.getDuty_name());
+                    hospitalLog.setAddr3(hospitalResponse.getDuty_addr());
+                    hospitalLog.setTel3(hospitalResponse.getDutyTel());
                     break;
             }
             count++;
