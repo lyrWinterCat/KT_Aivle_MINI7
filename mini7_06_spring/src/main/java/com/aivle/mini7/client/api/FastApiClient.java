@@ -19,6 +19,6 @@ import java.util.List;
 public interface FastApiClient {
 
      @PostMapping("/recommandHospital")
-     public List<HospitalResponse> getHospital(@RequestBody HospitalRequest requset);
+     public HospitalResponse getHospital(@RequestBody HospitalRequest requset);
 
 }

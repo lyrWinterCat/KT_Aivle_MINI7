@@ -52,7 +52,7 @@
         </thead>
         <tbody>
         <!-- 병원 목록 반복 -->
-        <tr th:each="hospital, iterStat : ${hospitalList}">
+        <tr th:each="hospital, iterStat : ${hospitalList.dutyList}">
             <td th:text="${iterStat.index + 1}"></td>
             <td th:text="${hospital.hospitalName}"></td>
             <td th:text="${hospital.address}"></td>
