@@ -1,0 +1,10 @@
+{
+    "api": "",
+    "model_directory": "./fine_tuned_bert",
+    "duty_path": "./dutylist.csv",
+    "summary_system_role_path": "./summary_system_role.conf",
+    "naver_client_id": "",
+    "naver_client_secret": "",
+    "haversine_count": 5,
+    "naver_count": 3
+}

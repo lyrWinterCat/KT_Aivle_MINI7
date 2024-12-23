@@ -21,9 +21,8 @@ class Project0606:
         self.conf = conf
 
         # openai api_key Load 작업
-        with open(self.conf['api_file_path'], 'r') as f:
-            openai.api_key = f.readline().strip()
-            os.environ['OPENAI_API_KEY'] = openai.api_key
+        openai.api_key = self.conf['api']
+        os.environ['OPENAI_API_KEY'] = openai.api_key
 
         # audio_to_text에서 사용할 client 생성
         self.client_stt = OpenAI()
@@ -36,6 +35,11 @@ class Project0606:
 
         # duty_list 불러오기
         self.duty_df = pd.read_csv(self.conf['duty_path'])
+        
+        # summary_system_role 읽기
+        with open(self.conf['summary_system_role_path'], 'r', encoding='utf-8') as file:
+            content = file.read()
+            self.conf['summary_system_role'] = content
 
     def audio_to_text(self, path):
         # 오디오 파일을 읽어서, 위스퍼를 사용한 변환
