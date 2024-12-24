@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.HashMap;
@@ -40,42 +41,82 @@ public class BoardController {
 		return "board/new";
 	}
 
+    // 게시글 작성
+    @PostMapping("/create")
+    public String createArticle(BoardDto.Post post) {
+        // DTO를 엔티티로 변환 후 저장
+        Board board = Board.toEntity(post);
+        boardRepository.save(board);
+        return "redirect:/board/" + board.getBoardId();
+    }
 
-	@PostMapping("/create")
-	public String createArticle(BoardDto.Post post) {
-		// DTO를 엔티티로 변환 후 저장
-		Board board = Board.toEntity(post);
-		boardRepository.save(board);
-		return "redirect:/board/" + board.getBoardId();
-	}
+    // 게시글 삭제
+    @GetMapping("/{boardId}/delete")
+    public String deleteBoard(@PathVariable("boardId") Long boardId) {
+        boardRepository.deleteById(boardId);
+        return "redirect:/board/list";
+    }
 
+    // 게시글 수정
+    @PostMapping("/{boardId}/update")
+    public String updateBoard(
+            @PathVariable("boardId") Long boardId,
+            @ModelAttribute BoardDto.Update updateDto) {
+        // 기존 게시글 가져오기
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        // 수정 사항 반영
+        board.setTitle(updateDto.getTitle());
+        board.setContent(updateDto.getContent());
+        board.setUpdateTime(LocalDateTime.now());
+
+        // 변경된 데이터 저장
+        boardRepository.save(board);
+
+        // 게시글 상세 페이지로 리다이렉트
+        return "redirect:/board/" + boardId;
+    }
+
+    @GetMapping("/{boardId}/edit")
+    public String editBoardForm(@PathVariable("boardId") Long boardId, Model model) {
+        model.addAttribute("title", "게시글 수정");
+        model.addAttribute("username", "LYR");
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        model.addAttribute("board", board);
+        return "edit"; // 템플릿 파일 이름
+    }
+
+	// 게시글 상세 페이지
 	@GetMapping("/{boardId}")
 	public String getBoard(@PathVariable("boardId") String boardId, Model model) {
-		model.addAttribute("title", "게시글");
-		model.addAttribute("username", "LYR");
-		try {
-			Long id = Long.parseLong(boardId); // 문자열을 Long으로 변환
-			Board board = boardRepository.findById(id)
-					.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        model.addAttribute("title", "게시글");
+        model.addAttribute("username", "LYR");
+        try {
+            Long id = Long.parseLong(boardId); // 문자열을 Long으로 변환
+            Board board = boardRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-			model.addAttribute("board", board);
-			String formattedCreateTime = board.getCreateTime().format(formatter);
-			String formattedUpdateTime = board.getUpdateTime() != null ? board.getUpdateTime().format(formatter) : null;
-			// 수정 시간이 존재하면 추가
-			if (board.getUpdateTime() != null) {
-				model.addAttribute("formattedUpdateTime", formattedUpdateTime);
-			} else {
-				model.addAttribute("formattedUpdateTIme", formattedCreateTime);
-			}
+            model.addAttribute("board", board);
+            String formattedCreateTime = board.getCreateTime().format(formatter);
+            String formattedUpdateTime = board.getUpdateTime() != null ? board.getUpdateTime().format(formatter) : null;
+            // 수정 시간이 존재하면 추가
+            if (board.getUpdateTime() != null) {
+                model.addAttribute("formattedUpdateTime", formattedUpdateTime);
+            } else {
+                model.addAttribute("formattedUpdateTIme", formattedCreateTime);
+            }
 
-			return "/board/detail"; // 상세 보기 템플릿 경로
-		} catch (NumberFormatException e) {
-			model.addAttribute("errorMessage", "잘못된 게시글 ID 형식입니다.");
-			return "errorPage"; // 에러 페이지 템플릿
-		}
-	}
+            return "/board/detail"; // 상세 보기 템플릿 경로
+        } catch (NumberFormatException e) {
+            model.addAttribute("errorMessage", "잘못된 게시글 ID 형식입니다.");
+            return "errorPage"; // 에러 페이지 템플릿
+        }
+    }
+    	
 
 	// 게시판 목록
 	@GetMapping("/list")
@@ -110,4 +151,3 @@ public class BoardController {
 	}
 }
 	
-
