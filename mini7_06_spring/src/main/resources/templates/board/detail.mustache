@@ -1,0 +1,39 @@
+{{> header}}
+{{> nav}}
+<div id="layoutSidenav">
+    {{> sidenav}}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container mt-4">
+                {{#board}}
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h2 class="card-title">{{title}}</h2>
+                            <p class="card-subtitle text-muted">
+                                작성자: {{username}} |
+                                {{#updateTime}}
+                                    수정 시간: {{updateTime}}
+                                {{/updateTime}}
+                                {{^updateTime}}
+                                    작성 시간: {{createTime}}
+                                {{/updateTime}}
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{content}}</p>
+                            <hr>
+                            {{>comment/list}}
+                            {{>comment/new}}
+                        </div>
+                        <div class="card-footer">
+                            <a href="/board/{{boardId}}/edit" class="btn btn-secondary">Edit</a>
+                            <a href="/board/{{boardId}}/delete" class="btn btn-danger">Delete</a>
+                            <a href="/board/list" class="btn btn-secondary">Board List</a>
+                        </div>
+                    </div>
+                {{/board}}
+            </div>
+        </main>
+    </div>
+</div>
+{{> footer}}
