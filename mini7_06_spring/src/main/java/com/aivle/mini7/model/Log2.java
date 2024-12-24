@@ -49,5 +49,5 @@ public class Log2 {
     //foreign
     @OneToOne
     @JsonManagedReference
-    private recommandHospital index;
+    private Hospital index;
 }
