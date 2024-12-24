@@ -21,19 +21,6 @@ public class AdminController {
 
     private final Log2Service logService;
 
-//     pageable default value
-//    @GetMapping("")
-//    public ModelAndView index(Pageable pageable) {
-//
-//
-//        ModelAndView mv = new ModelAndView();
-//        mv.setViewName("admin/index");
-//        Page<LogDto.ResponseList> logList = logService.getLogList(pageable);
-//        mv.addObject("logList", logList);
-//
-//        return mv;
-//    }
-
     @GetMapping("")
     public ModelAndView index(Pageable pageable, Model model) {
         model.addAttribute("title","Admin");
@@ -45,4 +32,6 @@ public class AdminController {
         mv.addObject("logList", logList);
         return mv;
     }
+
+
 }

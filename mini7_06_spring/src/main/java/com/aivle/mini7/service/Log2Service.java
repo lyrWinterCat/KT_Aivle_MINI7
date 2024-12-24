@@ -1,7 +1,10 @@
 package com.aivle.mini7.service;
 
+import com.aivle.mini7.dto.HospitalDto;
 import com.aivle.mini7.dto.Log2Dto;
+import com.aivle.mini7.model.Hospital;
 import com.aivle.mini7.model.Log2;
+import com.aivle.mini7.repository.HospitalRepository;
 import com.aivle.mini7.repository.Log2Repository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class Log2Service {
+    private final HospitalRepository hospitalRepository;
     private final Log2Repository log2Repository;
     //조회
     @Transactional(readOnly = true)
@@ -26,6 +30,18 @@ public class Log2Service {
     //삽입
     public Log2 insertLog(Log2 log2) {
         return log2Repository.save(log2);
+    }
+
+    //추천
+    @Transactional(readOnly = true)
+    public Page<HospitalDto.ResponseList> getHospitalList(Pageable pageable){
+        Page<Hospital> hospitals = hospitalRepository.findAll(pageable);
+        return hospitals.map(HospitalDto.ResponseList::of);
+    }
+
+    //삽입
+    public Hospital insertHospital(Hospital hospital){
+        return hospitalRepository.save(hospital);
     }
 
 }
