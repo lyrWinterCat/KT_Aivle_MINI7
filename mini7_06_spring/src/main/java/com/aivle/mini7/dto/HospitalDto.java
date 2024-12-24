@@ -30,7 +30,7 @@ public class HospitalDto {
                     .type(hospital.getType())
                     .distance(hospital.getDistance())
                     .duration(hospital.getDuration())
-                    .id(hospital.getId())
+                    .id(hospital.getLog2())
                     .build();
         }
     }
