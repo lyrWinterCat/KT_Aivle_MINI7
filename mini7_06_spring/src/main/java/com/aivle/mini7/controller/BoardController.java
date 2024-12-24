@@ -27,30 +27,28 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class BoardController {
 
-    private final BoardService boardService;
-    private final BoardRepository boardRepository;
+	private final BoardService boardService;
+	private final BoardRepository boardRepository;
 
-    // 새 글 작성 페이지
-    @GetMapping("/new")
-    public String newBoardForm(Model model) {
-        model.addAttribute("title", "Create New Board");
-        model.addAttribute("content", "Create New content");
-        model.addAttribute("username", "User Name");
-        model.addAttribute("password", "Password");
-        return "board/new";
-    }
-
-
-    @PostMapping("/create")
-    public String createArticle(BoardDto.Post post) {
-        // DTO를 엔티티로 변환 후 저장
-        Board board = Board.toEntity(post);
-        boardRepository.save(board);
-        return "redirect:/board/" + board.getBoardId();
-    }
+	// 새 글 작성 페이지
+	@GetMapping("/new")
+	public String newBoardForm(Model model) {
+		model.addAttribute("title", "Create New Board");
+		model.addAttribute("content", "Create New content");
+		model.addAttribute("username", "User Name");
+		model.addAttribute("password", "Password");
+		return "board/new";
+	}
 
 
-	
+	@PostMapping("/create")
+	public String createArticle(BoardDto.Post post) {
+		// DTO를 엔티티로 변환 후 저장
+		Board board = Board.toEntity(post);
+		boardRepository.save(board);
+		return "redirect:/board/" + board.getBoardId();
+	}
+
 	@GetMapping("/{boardId}")
 	public String getBoard(@PathVariable("boardId") String boardId, Model model) {
 		model.addAttribute("title", "게시글");
@@ -68,8 +66,7 @@ public class BoardController {
 			// 수정 시간이 존재하면 추가
 			if (board.getUpdateTime() != null) {
 				model.addAttribute("formattedUpdateTime", formattedUpdateTime);
-			}
-			else {
+			} else {
 				model.addAttribute("formattedUpdateTIme", formattedCreateTime);
 			}
 
@@ -79,39 +76,38 @@ public class BoardController {
 			return "errorPage"; // 에러 페이지 템플릿
 		}
 	}
-	
- 
-    
-    // 게시판 목록
-    @GetMapping("/list")
-    public String getBoardList(Model model,
-                               @RequestParam(name="page", defaultValue = "1") int page) {
-        // 페이지 요청 준비 (Spring Data Pageable)
-        Pageable pageable = PageRequest.of(page - 1, 10);
-        model.addAttribute("title", "게시판 목록"); // title 변수를 추가
-        model.addAttribute("username", "LYR");
-        Page<Board> boardPage = boardRepository.findAll(pageable);
 
-        int totalPages = boardPage.getTotalPages(); // 전체 페이지 수
+	// 게시판 목록
+	@GetMapping("/list")
+	public String getBoardList(Model model,
+							   @RequestParam(name = "page", defaultValue = "1") int page) {
+		// 페이지 요청 준비 (Spring Data Pageable)
+		Pageable pageable = PageRequest.of(page - 1, 10);
+		model.addAttribute("title", "게시판 목록"); // title 변수를 추가
+		model.addAttribute("username", "LYR");
+		Page<Board> boardPage = boardRepository.findAll(pageable);
 
-        // 페이지 번호와 현재 페이지 여부를 저장할 리스트
-        List<Map<String, Object>> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                .mapToObj(pageNum -> {
-                    Map<String, Object> pageMap = new HashMap<>();
-                    pageMap.put("pageNumber", pageNum);
-                    pageMap.put("isCurrentPage", pageNum == page);
-                    return pageMap;
-                }).toList();
+		int totalPages = boardPage.getTotalPages(); // 전체 페이지 수
 
-        // 모델 속성 추가
-        model.addAttribute("boardPage", boardPage);
-        model.addAttribute("pageNumbers", pageNumbers);
-        model.addAttribute("hasPrev", boardPage.hasPrevious());
-        model.addAttribute("hasNext", boardPage.hasNext());
-        model.addAttribute("prev", page > 1 ? page - 1 : 1);
-        model.addAttribute("next", page < totalPages ? page + 1 : totalPages);
+		// 페이지 번호와 현재 페이지 여부를 저장할 리스트
+		List<Map<String, Object>> pageNumbers = IntStream.rangeClosed(1, totalPages)
+				.mapToObj(pageNum -> {
+					Map<String, Object> pageMap = new HashMap<>();
+					pageMap.put("pageNumber", pageNum);
+					pageMap.put("isCurrentPage", pageNum == page);
+					return pageMap;
+				}).toList();
 
-        return "list"; // Mustache 템플릿 이름
-    }
+		// 모델 속성 추가
+		model.addAttribute("boardPage", boardPage);
+		model.addAttribute("pageNumbers", pageNumbers);
+		model.addAttribute("hasPrev", boardPage.hasPrevious());
+		model.addAttribute("hasNext", boardPage.hasNext());
+		model.addAttribute("prev", page > 1 ? page - 1 : 1);
+		model.addAttribute("next", page < totalPages ? page + 1 : totalPages);
+
+		return "list"; // Mustache 템플릿 이름
+	}
+}
 	
 
