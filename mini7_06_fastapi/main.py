@@ -45,6 +45,7 @@ def hospital_by_module(req: EmergencyRequest):
     response = {
         'emergencyGrade': emergencyGrade,
         'description': description,
+        'sourceAddr': result['addr'],
         'dutyList': []
     }
     for data in result['duty']:
@@ -57,7 +58,8 @@ def hospital_by_module(req: EmergencyRequest):
             'phoneNumber3': dutyTel[1] if len(dutyTel) > 1 else '',
             'latitude': data['wgs84lat'],
             'longitude': data['wgs84lon'],
-            'distance': data['road_distance'] / 1000.0
+            'distance': data['road_distance'] / 1000.0,
+            'duration': (data['road_duration'] + 59999) // 60000
         })
     
     return response

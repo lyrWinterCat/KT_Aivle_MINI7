@@ -14,16 +14,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
+
     private final BoardService boardService;
     private final BoardRepository boardRepository;
 
@@ -37,6 +40,7 @@ public class BoardController {
         return "board/new";
     }
 
+
     @PostMapping("/create")
     public String createArticle(BoardDto.Post post) {
         // DTO를 엔티티로 변환 후 저장
@@ -45,21 +49,38 @@ public class BoardController {
         return "redirect:/board/" + board.getBoardId();
     }
 
-    @GetMapping("/{boardId}")
-    public String getBoard(@PathVariable("boardId") String boardId, Model model) {
-        model.addAttribute("title", "게시글"); // title 변수를 추가
-        model.addAttribute("username", "LYR");
-        try {
-            Long id = Long.parseLong(boardId); // 문자열을 Long으로 변환
-            Board board = boardRepository.findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
-            model.addAttribute("board", board);
-            return "detail"; // 상세 보기 템플릿 경로
-        } catch (NumberFormatException e) {
-            model.addAttribute("errorMessage", "잘못된 게시글 ID 형식입니다.");
-            return "errorPage"; // 에러 페이지 템플릿
-        }
-    }
+
+	
+	@GetMapping("/{boardId}")
+	public String getBoard(@PathVariable("boardId") String boardId, Model model) {
+		model.addAttribute("title", "게시글");
+		model.addAttribute("username", "LYR");
+		try {
+			Long id = Long.parseLong(boardId); // 문자열을 Long으로 변환
+			Board board = boardRepository.findById(id)
+					.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+			model.addAttribute("board", board);
+			String formattedCreateTime = board.getCreateTime().format(formatter);
+			String formattedUpdateTime = board.getUpdateTime() != null ? board.getUpdateTime().format(formatter) : null;
+			// 수정 시간이 존재하면 추가
+			if (board.getUpdateTime() != null) {
+				model.addAttribute("formattedUpdateTime", formattedUpdateTime);
+			}
+			else {
+				model.addAttribute("formattedUpdateTIme", formattedCreateTime);
+			}
+
+			return "/board/detail"; // 상세 보기 템플릿 경로
+		} catch (NumberFormatException e) {
+			model.addAttribute("errorMessage", "잘못된 게시글 ID 형식입니다.");
+			return "errorPage"; // 에러 페이지 템플릿
+		}
+	}
+	
+ 
     
     // 게시판 목록
     @GetMapping("/list")
@@ -92,5 +113,5 @@ public class BoardController {
 
         return "list"; // Mustache 템플릿 이름
     }
-}
+	
 
