@@ -1,7 +1,10 @@
 package com.aivle.mini7.dto;
 
+import com.aivle.mini7.model.Hospital;
 import com.aivle.mini7.model.Log2;
 import lombok.*;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Log2Dto {
@@ -23,6 +26,7 @@ public class Log2Dto {
         private String address;
         private String duration;
         private String real_duration;
+        private List<Hospital> hospitals;
 
         public static ResponseList of(Log2 log2){
             return ResponseList.builder()
@@ -37,6 +41,7 @@ public class Log2Dto {
                     .address(log2.getAddress())
                     .duration(log2.getDuration())
                     .real_duration(log2.getReal_duration())
+                    .hospitals(log2.getHospitals())
                     .build();
         }
     }
