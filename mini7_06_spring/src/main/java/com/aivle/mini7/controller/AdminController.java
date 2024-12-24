@@ -23,7 +23,6 @@ public class AdminController {
     @GetMapping("")
     public ModelAndView index(Pageable pageable) {
 
-
         ModelAndView mv = new ModelAndView();
         mv.setViewName("admin/index");
         Page<LogDto.ResponseList> logList = logService.getLogList(pageable);

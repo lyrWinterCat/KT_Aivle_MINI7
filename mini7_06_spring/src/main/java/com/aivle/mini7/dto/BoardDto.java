@@ -22,11 +22,20 @@ public class BoardDto {
     public static class Post {
         private String title;
         private String content;
+		private String password;
+		private String username;
 
         // 명시적으로 전체 필드 생성자 정의
-        public Post(String title, String content) {
+        public Post(String title,
+					String content,
+					String password,
+					String username) {
+
             this.title = title;
             this.content = content;
+			this.password = password;
+			this.username = username;
+
         }
     }
 }

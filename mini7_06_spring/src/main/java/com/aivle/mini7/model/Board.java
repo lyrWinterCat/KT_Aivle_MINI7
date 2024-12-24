@@ -47,8 +47,13 @@ public class Board {
 
     // DTO → Entity 변환 메서드
     public static Board toEntity(BoardDto.Post post) {
-        return new Board(null, post.getTitle(), post.getContent());
+        return new Board(null,
+				post.getTitle(),
+				post.getContent(),
+				post.getUsername(),
+				post.getPassword(),
+				null,
+				null);
     }
-
 }
 

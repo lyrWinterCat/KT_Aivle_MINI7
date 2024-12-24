@@ -31,7 +31,7 @@ public class BoardController {
     }
 
     // 게시글 데이터 처리
-    @PostMapping("/create2")
+    @PostMapping("/create3")
     public String createArticle(BoardDto post) {
         System.out.println(post.toString());
         return "redirect:/board/new";
