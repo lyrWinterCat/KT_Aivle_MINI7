@@ -24,7 +24,9 @@ public class IndexController {
     private final FastApiClient fastApiClient;
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("title", "병원 추천 요청"); // title 변수를 추가
+        model.addAttribute("username", "user");
         return "emergencyReport";
     }
 
