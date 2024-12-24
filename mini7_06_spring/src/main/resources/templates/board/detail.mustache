@@ -11,12 +11,12 @@
                             <h2 class="card-title">{{title}}</h2>
                             <p class="card-subtitle text-muted">
                                 작성자: {{username}} |
-                                {{#updateTime}}
-                                    수정 시간: {{updateTime}}
-                                {{/updateTime}}
-                                {{^updateTime}}
-                                    작성 시간: {{createTime}}
-                                {{/updateTime}}
+                                {{#formattedUpdateTime}}
+                                    수정 시간: {{formattedUpdateTime}}
+                                {{/formattedUpdateTime}}
+                                {{^formattedUpdateTime}}
+                                    작성 시간: {{formattedUpdateTime}}
+                                {{/formattedUpdateTime}}
                             </p>
                         </div>
                         <div class="card-body">
