@@ -1,19 +1,55 @@
-<div class="container mt-4">
-    <ul class="list-group">
-        {{#boardPage.content}}
-            <li class="list-group-item">
-                <h4 class="mb-2"><a href="/board/{{boardId}}">제목 : {{title}}</a></h4>
-                <small class="text-muted">board ID: {{boardId}}</small>
-            </li>
-        {{/boardPage.content}}
-        <a href="/board/new">Create News</a>
-        <ul class="pagination justify-content-center">
-            {{#hasPrev}}
-                <a class="page-link" href="?page={{prev}}">Previous</a>
-            {{/hasPrev}}
-            {{#hasNext}}
-                <a class="page-link" href="?page={{next}}">Next</a>
-            {{/hasNext}}
-        </ul>
-    </ul>
+{{> header}}
+{{> nav}}
+<div id="layoutSidenav">
+    {{> sidenav}}
+    <div id="layoutSidenav_content">
+        <main>
+            <!-- 중앙 정렬 및 배경 추가 -->
+            <div class="container mt-4" style="max-width: 800px; margin: auto; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+                <!-- 게시판 제목과 새 게시글 작성 버튼 -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">게시판 목록</h2>
+                    <a href="/board/new" class="btn btn-primary">새 게시글 작성</a>
+                </div>
+
+                <!-- 게시글 리스트 -->
+                <div class="list-group mb-4">
+                    {{#boardPage.content}}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="fw-bold text-muted">#{{boardId}}</div>
+                                <div class="ms-3 flex-grow-1">
+                                    <h5 class="mb-1 text-start">
+                                        <a href="/board/{{boardId}}" class="text-decoration-none">{{title}}</a>
+                                    </h5>
+                                    <small class="text-muted">작성자: {{username}}</small>
+                                </div>
+                                <small class="text-muted">{{createTime}}</small>
+                            </div>
+                        </div>
+                    {{/boardPage.content}}
+                </div>
+
+                <!-- 페이지네이션 -->
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item {{^hasPrev}}disabled{{/hasPrev}}">
+                            <a class="page-link" href="?page={{prev}}" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        {{#pageNumbers}}
+                            <li class="page-item {{#isCurrentPage}}active{{/isCurrentPage}}">
+                                <a class="page-link" href="?page={{pageNumber}}">{{pageNumber}}</a>
+                            </li>
+                        {{/pageNumbers}}
+                        <li class="page-item {{^hasNext}}disabled{{/hasNext}}">
+                            <a class="page-link" href="?page={{next}}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </main>
+        {{> footer}}
+    </div>
 </div>
+</body>
+</html>
