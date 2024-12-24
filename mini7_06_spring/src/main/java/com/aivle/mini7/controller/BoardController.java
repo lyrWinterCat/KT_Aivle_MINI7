@@ -9,6 +9,9 @@ import com.aivle.mini7.service.BoardService;
 import com.aivle.mini7.dto.BoardDto;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +26,12 @@ public class BoardController {
     // 게시글 작성 폼 제공
     @GetMapping("/new")
     public String newArticleForm(Model model) {
-        model.addAttribute("title", "게시글 작성"); // 템플릿에 전달할 데이터 추가
-        return "board"; // board.mustache 템플릿 반환
+        model.addAttribute("title", "게시글 작성");
+        return "board"; // 새 게시글 작성 폼 경로
     }
 
     // 게시글 데이터 처리
-    @PostMapping("/create")
+    @PostMapping("/create2")
     public String createArticle(BoardDto post) {
         System.out.println(post.toString());
         return "redirect:/board/new";
@@ -58,10 +61,39 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	@GetMapping("/list")
+	@GetMapping("/list2")
 	public String getBoardList(Model model){
 		List<Board> boardList = boardRepository.findAll();
 		model.addAttribute("boardList", boardList);
 		return "board/list";
 	}
+
+    @GetMapping("/{boardId}")
+    public String getBoard(@PathVariable("boardId") Long boardId, Model model) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        model.addAttribute("board", board);
+        return "detail"; // 상세 보기 템플릿 경로
+    }
+
+    @GetMapping("/list")
+    public String getBoardList(Model model,
+                               @RequestParam(name="page", defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 7);
+        Page<Board> boardPage = boardRepository.findAll(pageable);
+        model.addAttribute("newsPage", boardPage);
+        model.addAttribute("prev", pageable.previousOrFirst().getPageNumber());
+        model.addAttribute("next", pageable.next().getPageNumber());
+        model.addAttribute("hasNext", boardPage.hasNext());
+        model.addAttribute("hasPrev", boardPage.hasPrevious());
+        return "list";
+    }
+
+    @PostMapping("/create")
+    public String createArticle(BoardDto.Post post) {
+        // DTO를 엔티티로 변환 후 저장
+        Board board = Board.toEntity(post);
+        boardRepository.save(board);
+        return "redirect:/board/" + board.getBoardId();
+    }
 }
