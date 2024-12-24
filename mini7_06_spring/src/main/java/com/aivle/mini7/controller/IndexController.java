@@ -6,6 +6,7 @@ import com.aivle.mini7.client.dto.HospitalRequest;
 import com.aivle.mini7.client.dto.HospitalResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,9 @@ import java.util.List;
 public class IndexController {
 
     private final FastApiClient fastApiClient;
+
+    @Value("${naver.map.client-id}")
+    private String mapClientId; // application.properties에서 API 키 불러오기
 
     @GetMapping("/")
     public String index() {
@@ -69,7 +73,7 @@ public class IndexController {
         if (emergencyGrade >= 1 && emergencyGrade <= 3) {
             ModelAndView mv = new ModelAndView("emergency"); // emergency.mustache로 이동
             mv.addObject("hospitalResponse", hospitalResponse); // 응답 데이터를 모델에 추가
-            return emergency(hospitalResponse);
+            return emergency(hospitalResponse,lat,lon);
         } else if (emergencyGrade >= 4 && emergencyGrade <= 5) {
             return notEmergency(hospitalResponse); // notEmergency 메서드 호출
         }
@@ -79,7 +83,7 @@ public class IndexController {
     }
 
     @GetMapping("/emergency")
-    public ModelAndView emergency(HospitalResponse hospitalResponse){
+    public ModelAndView emergency(HospitalResponse hospitalResponse, Double lat, Double lon){
         // 모델 생성
         ModelAndView mv = new ModelAndView("emergency"); // notEmergency.mustache 템플릿 반환
 
@@ -87,6 +91,13 @@ public class IndexController {
         mv.addObject("emergencyLevel", hospitalResponse.getEmergencyGrade());
         mv.addObject("promptContent", hospitalResponse.getDescription().replace("\n", "<br>")); // 줄바꿈을 <br>로 변환
         mv.addObject("hospitalList", hospitalResponse.getDutyList()); // 병원 리스트 설정
+
+        //내위치
+        mv.addObject("myLat", lat);
+        mv.addObject("myLng", lon);
+
+        //map api id
+        mv.addObject("mapClientId",mapClientId);
 
         mv.addObject("title", "응급상황");
         mv.addObject("username", "user");
