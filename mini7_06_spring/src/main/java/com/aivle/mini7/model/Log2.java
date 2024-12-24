@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name ="logs")
 @NoArgsConstructor
@@ -46,8 +48,8 @@ public class Log2 {
 
     @Column(nullable = false)
     private String real_duration;
-    //foreign
-    @OneToOne
+
+    @OneToMany(mappedBy = "log2")
     @JsonManagedReference
-    private Hospital index;
+    private List<Hospital> hospitals;
 }
