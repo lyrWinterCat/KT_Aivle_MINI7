@@ -1,27 +1,18 @@
 {{>header}}
-<!DOCTYPE html>
-<html lang="ko">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
-</head>
-<body>
-<div class="container">
-    <h1>{{title}}</h1> <!-- title 변수가 제대로 전달되었는지 확인 -->
-    <form action="/board/create" method="post">
-        <div class="mb-3">
+    <form class="container" action="/board/create" method="post">
+        <div class ="mb-3">
             <label class="form-label">Title</label>
             <input type="text" class="form-control" name="title">
         </div>
-        <div class="mb-3">
+        <div class ="mb-3">
             <label class="form-label">Content</label>
             <textarea class="form-control" name="content" rows="5"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="/board/list">cancel</a>
     </form>
-</div>
-</body>
-</html>
 {{>footer}}
 

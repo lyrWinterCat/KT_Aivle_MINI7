@@ -8,6 +8,8 @@ import com.aivle.mini7.repository.BoardRepository;
 import com.aivle.mini7.model.Board;
 import com.aivle.mini7.dto.BoardDto;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -27,7 +29,8 @@ public class BoardService {
 				username,
 				password,
 				null, // createTime은 @CreationTimestamp로 자동 설정
-				null  // updateTime은 @UpdateTimestamp로 자동 설정
+				null, // updateTime은 @UpdateTimestamp로 자동 설정
+				new ArrayList<>()
 		);
 
 		boardRepository.save(board);
