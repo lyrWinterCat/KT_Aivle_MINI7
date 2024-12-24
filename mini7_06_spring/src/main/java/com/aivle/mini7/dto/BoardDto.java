@@ -2,12 +2,28 @@ package com.aivle.mini7.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDto {
-    private String title;
-    private String content;
+	private Long boardId;
+	private String title;
+	private String content;
+	private String createTime;
+	private String updateTime;
+	private String password;
+	private String username;
 }
+
+//public class BoardDto{
+//	@Getter
+//	@Setter
+//	@ToString
+//	@NoArgsConstructor
+//	@AllArgsConstructor
+//	public static class Post {
+//		private String title;
+//		private String content;
+//	}
+//}
