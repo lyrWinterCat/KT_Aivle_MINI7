@@ -98,17 +98,19 @@ public class BoardController {
             Board board = boardRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-            model.addAttribute("board", board);
-            String formattedCreateTime = board.getCreateTime().format(formatter);
-            String formattedUpdateTime = board.getUpdateTime() != null ? board.getUpdateTime().format(formatter) : null;
-            // 수정 시간이 존재하면 추가
-            if (board.getUpdateTime() != null) {
-                model.addAttribute("formattedUpdateTime", formattedUpdateTime);
-            } else {
-                model.addAttribute("formattedUpdateTIme", formattedCreateTime);
-            }
+			model.addAttribute("board", board);
+
+
+			String formattedCreateTime = board.getCreateTime().format(formatter);
+			String formattedUpdateTime = board.getUpdateTime() != null ? board.getUpdateTime().format(formatter) : null;
+			// 수정 시간이 존재하면 추가
+			if (board.getUpdateTime() != null) {
+				model.addAttribute("formattedUpdateTime", formattedUpdateTime);
+			} else {
+				model.addAttribute("formattedUpdateTIme", formattedCreateTime);
+			}
 
             return "/board/detail"; // 상세 보기 템플릿 경로
         } catch (NumberFormatException e) {
