@@ -19,7 +19,7 @@ public class HospitalDto {
         private String type;
         private Integer distance;
         private String duration;
-        private Log2 id;
+        private Log2 logs;
 
         public static ResponseList of(Hospital hospital){
             return ResponseList.builder()
@@ -30,7 +30,7 @@ public class HospitalDto {
                     .type(hospital.getType())
                     .distance(hospital.getDistance())
                     .duration(hospital.getDuration())
-                    .id(hospital.getLog2())
+                    .logs(hospital.getLog2())
                     .build();
         }
     }
