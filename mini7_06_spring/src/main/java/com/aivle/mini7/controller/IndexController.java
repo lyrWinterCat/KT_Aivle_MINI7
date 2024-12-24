@@ -46,8 +46,9 @@ public class IndexController {
 
     @GetMapping("/dy")
     public String dy(Model model) {
-        model.addAttribute("title", "Bootstrap Test Page");
-        model.addAttribute("username", "bootstrap");
+
+        model.addAttribute("title", "EMERGENCY");
+        model.addAttribute("username", "LYR");
         return "emergency";
     }
 
