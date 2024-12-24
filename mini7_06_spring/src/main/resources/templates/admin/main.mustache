@@ -7,14 +7,14 @@
     <thead>
     <tr>
         <th>#</th>
+        <th>등록번호</th>
         <th>날짜</th>
         <th>입력위도</th>
         <th>입력경도</th>
         <th>응급등급</th>
         <th>증상요약</th>
-        <th>추천병원리스트</th>
-        <th>선택병원</th>
-        <th>선택병원위치</th>
+        <th>병운</th>
+        <th>병원위치</th>
         <th>예상이동시간</th>
         <th>실제이동시간</th>
     </tr>
@@ -23,16 +23,17 @@
     <!-- 데이터 반복 -->
     <tr th:each="log, iterStat : ${logList.content}">
         <td th:text="${iterStat.index + 1}"></td>
+        <td th:text="${log.id}"></td>
         <td th:text="${log.datetime}"></td>
-        <td th:text="${log.em_latitude}"></td>
-        <td th:text="${log.em_longitude}"></td>
-        <td th:text="${log.em_class}"></td>
-        <td th:text="${log.em_text}"></td>
-        <td th:text="${log.hospitallist}"></td>
-        <td th:text="${log.hospital}"></td>
-        <td th:text="${log.hospitalloc}"></td>
-        <td th:text="${log.exptime}"></td>
-        <td th:text="${log.realtime}"></td>
+        <td th:text="${log.latitude}"></td>
+        <td th:text="${log.longitude}"></td>
+        <td th:text="${log.startAddress}"></td>
+        <td th:text="${log.emergencyGrade}"></td>
+        <td th:text="${log.description}"></td>
+        <td th:text="${log.hospitalName}"></td>
+        <td th:text="${log.address}"></td>
+        <td th:text="${log.duration}"></td>
+        <td th:text="${log.real_duration}"></td>
     </tr>
     </tbody>
 </table>
