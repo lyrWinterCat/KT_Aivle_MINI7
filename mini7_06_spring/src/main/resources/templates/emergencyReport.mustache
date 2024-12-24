@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <form action="recommend_hospital" method="post" enctype="application/x-www-form-urlencoded">
-                        <input type="hidden" class="form-control" id="navercount" name="navercount" value="3" required>
+<!--                        <input type="hidden" class="form-control" id="navercount" name="navercount" value="3" required>-->
                         <label for="text" class="form-label subTitle">상황 설명</label>
                         <textarea class="form-control custom_box" id="text" name="text" rows="3" required></textarea>
 
@@ -54,10 +54,10 @@
                         <!-- 추천 받을 병원 개수 선택하는 콤보박스 추가 -->
                         <div class="row mb-3 align-items-center">
                             <div class="col">
-                                <label for="hospitalCount" class="form-label subTitle">추천받을 병원 개수</label>
+                                <label for="navercount" class="form-label subTitle">추천받을 병원 개수</label>
                             </div>
                             <div class="col-auto">
-                                <select class="form-control custom_box" id="hospitalCount" name="hospitalCount">
+                                <select class="form-control custom_box" id="navercount" name="navercount">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>

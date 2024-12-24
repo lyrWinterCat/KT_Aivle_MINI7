@@ -14,4 +14,5 @@ public class HospitalInfoResponse {
     private double latitude;
     private double longitude;
     private double distance;
+    private int duration;
 }

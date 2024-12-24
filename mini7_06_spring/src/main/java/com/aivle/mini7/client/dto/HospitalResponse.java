@@ -11,5 +11,6 @@ import java.util.List;
 public class HospitalResponse {
     private int emergencyGrade;
     private String description;
+    private String sourceAddr;
     private List<HospitalInfoResponse> dutyList;
 }
