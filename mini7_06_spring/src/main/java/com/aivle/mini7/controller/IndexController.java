@@ -53,6 +53,9 @@ public class IndexController {
         return "emergency";
     }
 
+    // 여기서 추가해야할 기능 : requestParam을 기본적으로 logDB에 저장하고,
+    // db에 저장된 테이블의 id를 받아서 가지고 있어야함.
+    // 그 id를 가지고 emergency/notEmergency에서 logDB에 한번 더 저장할 수 있어야함
     @PostMapping("/recommend_hospital")
     public ModelAndView recommend_hospital(@RequestParam("navercount") Integer navercount,
                                            @RequestParam("text") String text,
