@@ -1,21 +1,25 @@
-<div class="container mt-4">
-    {{#board}}
-        <div class="card mb-4">
-            <div class="card-header">
-                <h2 class="card-title">Title : {{title}}</h2>
+
+{{>header}}
+{{> nav}}
+<div id="layoutSidenav">
+    {{> sidenav}}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container mt-4">
+                {{#board}}
+                    <div class="blog-post mb-4">
+                        <h2 class="blog-post-title">{{title}}</h2>
+                        <hr>
+                        <p class="blog-post-content">{{content}}</p>
+                        <hr>
+                    </div>
+                {{/board}}
+                <a href="/board/list" class="btn btn-primary">Board List</a>
             </div>
-            <div class="card-body">
-                <strong><h2>Content</h2></strong>
-                <p class="card-text">: {{content}}</p>
-                <hr>
-                {{>comment/new}}
-                {{>comment/list}}
-            </div>
-            <div class="card-footer">
-                <a href="/board/{{boardId}}/edit" class="btn btn-secondary">Edit</a>
-                <a href="/board/{{boardId}}/delete" class="btn btn-danger">Delete</a>
-                <a href="/board/list">Board List</a>
-            </div>
-        </div>
-    {{/board}}
+        </main>
+        {{> footer}}
+    </div>
 </div>
+</body>
+</html>
+
