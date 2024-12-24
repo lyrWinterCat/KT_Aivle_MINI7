@@ -1,12 +1,14 @@
 package com.aivle.mini7.dto;
 
 import lombok.*;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @ToString
 @NoArgsConstructor // BoardDto 기본 생성자만 유지
 @AllArgsConstructor
 public class BoardDto {
+
 	private Long boardId;
 	private String title;
 	private String content;

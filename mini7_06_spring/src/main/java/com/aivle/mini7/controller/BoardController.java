@@ -85,7 +85,7 @@ public class BoardController {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         model.addAttribute("board", board);
-        return "edit"; // 템플릿 파일 이름
+        return "/board/edit"; // 템플릿 파일 이름
     }
 
 	// 게시글 상세 페이지
@@ -130,6 +130,8 @@ public class BoardController {
 		model.addAttribute("username", "LYR");
 		Page<Board> boardPage = boardRepository.findAll(pageable);
 
+
+
 		int totalPages = boardPage.getTotalPages(); // 전체 페이지 수
 
 		// 페이지 번호와 현재 페이지 여부를 저장할 리스트
@@ -149,7 +151,7 @@ public class BoardController {
 		model.addAttribute("prev", page > 1 ? page - 1 : 1);
 		model.addAttribute("next", page < totalPages ? page + 1 : totalPages);
 
-		return "list"; // Mustache 템플릿 이름
+		return "board/list"; // Mustache 템플릿 이름
 	}
 }
 	

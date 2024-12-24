@@ -33,17 +33,14 @@
                                         {{#formattedUpdateTime}}
                                             수정 시간: {{formattedUpdateTime}}
                                         {{/formattedUpdateTime}}
-                                        {{^formattedUpdateTime}}
-                                            작성 시간: {{formattedCreateTime}}
-                                        {{/formattedUpdateTime}}
                                     </small>
                                     <div class="d-flex align-items-center mt-2">
                                         <p class="me-auto">{{content}}</p>
-                                        <!-- Password Input -->
-                                        <div class="input-group" style="width: 300px;">
-                                            <input type="password" class="form-control" placeholder="Enter password">
-                                            <button class="btn btn-outline-danger">Delete</button>
-                                        </div>
+                                        <form action="/comment/delete/{{CommentId}}" method="post" class="d-flex">
+                                            <!-- Password Input -->
+                                            <input type="password" name="password" class="form-control me-2" placeholder="Enter password" required>
+                                            <button type="submit" class="btn btn-outline-danger">삭제</button>
+                                        </form>
                                     </div>
                                 </div>
                                 <hr>
@@ -53,9 +50,9 @@
 
                         <!-- Footer Section -->
                         <div class="card-footer text-end bg-light">
-                            <a href="/board/{{boardId}}/edit" class="btn btn-outline-secondary me-2">Edit</a>
-                            <a href="/board/{{boardId}}/delete" class="btn btn-outline-danger me-2">Delete</a>
-                            <a href="/board/list" class="btn btn-outline-primary">Board List</a>
+                            <a href="/board/{{boardId}}/edit" class="btn btn-outline-secondary me-2">수정</a>
+                            <a href="/board/{{boardId}}/delete" class="btn btn-outline-danger me-2">삭제</a>
+                            <a href="/board/list" class="btn btn-outline-primary">게시판 목록</a>
                         </div>
                     </div>
                 {{/board}}
