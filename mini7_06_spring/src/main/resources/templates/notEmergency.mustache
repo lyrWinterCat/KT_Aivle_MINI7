@@ -1,25 +1,72 @@
 {{> header}}
 {{> nav}}
 
+<link rel="stylesheet" href="/css/notEmergency.css">
+
 <div id="layoutSidenav">
     {{> sidenav}}
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Dashboard</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Dashboard</li>
-                </ol>
+                <!--my content-->
+                <div class="container text-center p-4">
 
-                <!-- DataTable -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        DataTable Example
+                    <!-- 말풍선 섹션 -->
+                    <div class="row my-4"> <!-- my-4로 마진 증가 -->
+                        <!-- 응급등급 섹션 -->
+                        <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                            <div class="row">
+                                <h6 class="text-center">응급등급</h6>
+                            </div>
+                            <div class="row my-3">
+                                <div class="em_cls_circle shadow">
+                                    {{emergencyLevel}} <!-- 응급 등급 데이터 -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="speech-bubble shadow" style="padding: 15px; margin: 10px 0;"> <!-- 패딩 및 마진 추가 -->
+                                {{{promptContent}}} <!-- 프롬프트 메시지 데이터 -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <table id="datatablesSimple">
 
+                    <!-- 병원이 필요하신가요? 버튼 -->
+                    <div id="hospitalBtn" class="row justify-content-center my-4"> <!-- my-4로 마진 증가 -->
+                        <div class="col-auto">
+                            <button class="btn btn-primary" style="padding: 12px 24px; margin-top: 20px;" onclick="toggleHospitalTable()">병원이 필요하신가요?</button> <!-- 패딩 조정 -->
+                        </div>
+                    </div>
+
+                    <!-- 병원 테이블 섹션 -->
+                    <div id="hospitalSection" class="row justify-content-center align-items-center my-4" style="display: none;"> <!-- my-4로 마진 증가 -->
+                        <table class="table table-striped table-hover p-4">
+                            <thead style="background-color: darkseagreen">
+                            <tr>
+                                <th scope="col">병원 이름</th>
+                                <th scope="col">주소</th>
+                                <th scope="col">전화번호1</th>
+                                <th scope="col">전화번호2</th>
+                                <th scope="col">센터</th>
+                                <th scope="col">위도</th>
+                                <th scope="col">경도</th>
+                                <th scope="col">거리(km)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#hospitalList}} <!-- 병원 리스트 반복 -->
+                            <tr>
+                                <td>{{hospitalName}}</td>
+                                <td>{{address}}</td>
+                                <td>{{phoneNumber1}}</td>
+                                <td>{{phoneNumber3}}</td>
+                                <td>{{emergencyMedicalInstitutionType}}</td>
+                                <td>{{latitude}}</td>
+                                <td>{{longitude}}</td>
+                                <td>{{distance}}</td>
+                            </tr>
+                            {{/hospitalList}}
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -28,5 +75,16 @@
         {{> footer}}
     </div>
 </div>
+
+<script>
+    function toggleHospitalTable() {
+        const hospitalSection = document.getElementById('hospitalSection');
+        if (hospitalSection.style.display === 'none') {
+            hospitalSection.style.display = 'block';
+        } else {
+            hospitalSection.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>
