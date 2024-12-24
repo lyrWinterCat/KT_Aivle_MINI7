@@ -35,7 +35,6 @@ public class BoardDto {
             this.content = content;
 			this.password = password;
 			this.username = username;
-
         }
     }
 }

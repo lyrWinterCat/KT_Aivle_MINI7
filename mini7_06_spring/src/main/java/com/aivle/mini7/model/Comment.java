@@ -1,7 +1,10 @@
 package com.aivle.mini7.model;
 
+import com.aivle.mini7.dto.CommentDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -25,10 +28,22 @@ public class Comment {
 	@Column(nullable = false)
 	private String username;
 
-	@Column(nullable = false, updatable = false)
-	private LocalDateTime createTime = LocalDateTime.now();
+	@CreationTimestamp
+	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
+	private LocalDateTime createTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id", nullable = false)
+	@JsonBackReference
 	private Board board;
+
+	// DTO → Entity 변환 메서드
+	public static Comment toEntity(CommentDto.Post post) {
+		return new Comment(null,
+							post.getContent(),
+							post.getPassword(),
+							post.getUsername(),
+							null,
+							null);
+	}
 }
