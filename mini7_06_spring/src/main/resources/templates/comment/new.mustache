@@ -1,0 +1,24 @@
+<div class="card m-2" id="comment-new">
+    <div class="card-body">
+        <form action="/comment/create/{{boardId}}" method="post">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="new-comment-username" name="username", placeholder="username">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <input type="password" class="form-control" id="comment-password" name="password",
+                               placeholder="password">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+<textarea type="text" class="form-control" rows="3"
+          id="new-comment-body" name="content", placeholder="content"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
