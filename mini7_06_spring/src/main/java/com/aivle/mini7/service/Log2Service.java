@@ -16,12 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class Log2Service {
     private final Log2Repository log2Repository;
-
+    //조회
     @Transactional(readOnly = true)
     public Page<Log2Dto.ResponseList> getLogList(Pageable pageable){
         Page<Log2> logs = log2Repository.findAll(pageable);
 
         return logs.map(Log2Dto.ResponseList::of);
+    }
+    //삽입
+    public Log2 insertLog(Log2 log2) {
+        return log2Repository.save(log2);
     }
 
 }
