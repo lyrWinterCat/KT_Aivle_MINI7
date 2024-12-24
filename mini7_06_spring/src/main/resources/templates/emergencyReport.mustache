@@ -1,8 +1,21 @@
 {{> header}}
 {{> nav}}
 
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"> <!-- Google Fonts 링크 추가 -->
 <link rel="stylesheet" href="/css/emergencyReport.css">
 <script src="/js/emergencyReport.js"></script>
+
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif; /* 기본 폰트 설정 */
+    }
+
+    .title {
+        font-family: 'Montserrat', sans-serif; /* 제목에 적용 */
+        font-size: 2rem; /* 제목 크기 조정 */
+        font-weight: 700; /* 두께 조정 (볼드) */
+    }
+</style>
 
 <div id="layoutSidenav">
     {{> sidenav}}
@@ -10,7 +23,7 @@
         <main>
             <div class="container">
                 <div class="form-container">
-                    <h2 class="text-center title lexend-deca-Medium">Emergency Call</h2>
+                    <h2 class="text-center title">Emergency Call</h2> <!-- 제목에 클래스 적용 -->
                     <div id="record" class="text-center mb-3">
                         <div class="Rec" id="Rec">
                             <i class="fas fa-microphone fa-3x"></i>
@@ -31,9 +44,11 @@
                                 <label for="lon" class="form-label subTitle">경도</label>
                                 <input type="text" class="form-control custom_box" id="lon" name="lon" placeholder="경도를 입력하세요" required>
                             </div>
-                        </div>
-                        <div class="col-auto mb-4">
-                            <button type="button" class="btn btn-success" id="getLocation">현재 위치 가져오기</button>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-transparent" id="getLocation">
+                                    <i class="fa-solid fa-location-crosshairs" style="padding: 6px 10px; font-size: 45px; margin-top:20px;"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <!-- 추천 받을 병원 개수 선택하는 콤보박스 추가 -->

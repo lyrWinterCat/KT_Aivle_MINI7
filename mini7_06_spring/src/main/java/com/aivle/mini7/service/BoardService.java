@@ -8,6 +8,7 @@ import com.aivle.mini7.repository.BoardRepository;
 import com.aivle.mini7.model.Board;
 import com.aivle.mini7.dto.BoardDto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -32,7 +33,17 @@ public class BoardService {
 				null, // updateTime은 @UpdateTimestamp로 자동 설정
 				new ArrayList<>()
 		);
-
 		boardRepository.save(board);
 	}
+
+	public void updateBoard(Long boardId, BoardDto.Update updateDto) {
+		Board board = boardRepository.findById(boardId)
+				.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+		board.setTitle(updateDto.getTitle());
+		board.setContent(updateDto.getContent());
+		board.setUpdateTime(LocalDateTime.now());
+		boardRepository.save(board);
+	}
+
+
 }

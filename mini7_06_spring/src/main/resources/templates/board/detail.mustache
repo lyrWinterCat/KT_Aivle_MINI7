@@ -6,29 +6,56 @@
         <main>
             <div class="container mt-4">
                 {{#board}}
-                    <div class="card mb-4">
+                    <div class="card mb-4 shadow-sm">
+                        <!-- Header Section -->
                         <div class="card-header">
-                            <h2 class="card-title">{{title}}</h2>
-                            <p class="card-subtitle text-muted">
-                                작성자: {{username}} |
+                            <h2 class="card-title mb-0">{{title}}</h2>
+                            <small class="card-subtitle">
+                                작성자: <strong>{{username}}</strong> |
                                 {{#formattedUpdateTime}}
                                     수정 시간: {{formattedUpdateTime}}
                                 {{/formattedUpdateTime}}
                                 {{^formattedUpdateTime}}
-                                    작성 시간: {{formattedUpdateTime}}
+                                    작성 시간: {{formattedCreateTime}}
                                 {{/formattedUpdateTime}}
-                            </p>
+                            </small>
                         </div>
+
+                        <!-- Body Section -->
                         <div class="card-body">
-                            <p class="card-text">{{content}}</p>
+                            <p class="card-text" style="white-space: pre-wrap;">{{content}}</p>
                             <hr>
-                            {{>comment/list}}
+                            <h5>댓글</h5>
+                            {{#comments}}
+                                <div class="mb-3">
+                                    <small class="card-subtitle">
+                                        작성자: <strong>{{username}}</strong> |
+                                        {{#formattedUpdateTime}}
+                                            수정 시간: {{formattedUpdateTime}}
+                                        {{/formattedUpdateTime}}
+                                        {{^formattedUpdateTime}}
+                                            작성 시간: {{formattedCreateTime}}
+                                        {{/formattedUpdateTime}}
+                                    </small>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <p class="me-auto">{{content}}</p>
+                                        <!-- Password Input -->
+                                        <div class="input-group" style="width: 300px;">
+                                            <input type="password" class="form-control" placeholder="Enter password">
+                                            <button class="btn btn-outline-danger">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            {{/comments}}
                             {{>comment/new}}
                         </div>
-                        <div class="card-footer">
-                            <a href="/board/{{boardId}}/edit" class="btn btn-secondary">Edit</a>
-                            <a href="/board/{{boardId}}/delete" class="btn btn-danger">Delete</a>
-                            <a href="/board/list" class="btn btn-secondary">Board List</a>
+
+                        <!-- Footer Section -->
+                        <div class="card-footer text-end bg-light">
+                            <a href="/board/{{boardId}}/edit" class="btn btn-outline-secondary me-2">Edit</a>
+                            <a href="/board/{{boardId}}/delete" class="btn btn-outline-danger me-2">Delete</a>
+                            <a href="/board/list" class="btn btn-outline-primary">Board List</a>
                         </div>
                     </div>
                 {{/board}}
