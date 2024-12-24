@@ -1,0 +1,37 @@
+{{> header}}
+{{> nav}}
+
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=t0hj82dtju"></script>
+
+<div id="layoutSidenav">
+    {{> sidenav}}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 80vh;">
+                <div class="text-center">
+                    <div>
+                        <i class="fa-solid fa-lock mb-3" style="height: 40px; color: #7f8a93"></i>
+                    </div>
+                    <form action="/admin" method="post">
+                        {{#error}}
+                            <p style="color: red; margin-bottom: 5px;">{{error}}</p>
+                        {{/error}}
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="password-label">Password</span>
+                            <input type="password"
+                                   class="form-control"
+                                   id="password"
+                                   name="password"
+                                   aria-label="Password"
+                                   aria-describedby="password-label"
+                                   required>
+                        </div>
+                        <button type="submit" class="btn btn-secondary mt-2">확인</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        {{> footer}}
+    </div>
+</div>

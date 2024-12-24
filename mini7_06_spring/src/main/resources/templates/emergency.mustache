@@ -95,7 +95,7 @@
                                 <th scope="col">전화번호1</th>
                                 <th scope="col">전화번호2</th>
                                 <th scope="col">센터</th>
-                                <th scope="col">거리(km)</th>
+                                <th scope="col">거리</th>
                                 <th scope="col">예상 시간</th>
                             </tr>
                             </thead>
@@ -109,7 +109,7 @@
                                 <td>{{phoneNumber1}}</td>
                                 <td>{{phoneNumber3}}</td>
                                 <td>{{emergencyMedicalInstitutionType}}</td>
-                                <td>{{distance}}</td>
+                                <td>{{distance}}km</td>
                                 <td>{{duration}}분</td></tr>
                             </tbody>
                             {{/hospitalList}}
@@ -148,6 +148,7 @@
 
     var myLat = {{myLat}}; // 위도
     var myLng = {{myLng}}; // 경도
+    var clientId = {{client_id}};
 
     // 네이버 지도 초기화
     var mapOptions = {
@@ -160,13 +161,18 @@
         {{#hospitalList}}
         markers.push({
             id: "{{hospitalName}}", // hospitalName을 문자열로 처리
-            position: new naver.maps.LatLng({{latitude}}, {{longitude}})
+            position: new naver.maps.LatLng({{latitude}}, {{longitude}}),
+            duration : "{{duration}}",
+            address : "{{address}}"
+
         });
         {{/hospitalList}}
 
 
     var selectedMarkerId = null; // 선택된 마커 ID 저장
     var selectedLatLng = null; // 선택된 마커의 위도와 경도 저장
+    var selectedAddr = null;
+    var selectedDuration = null;
 
     // InfoWindow 객체 생성
     var infoWindow = new naver.maps.InfoWindow({
@@ -198,6 +204,8 @@
         naver.maps.Event.addListener(marker, 'click', function() {
             selectedMarkerId = markerData.id; // 선택된 마커 ID 저장
             selectedLatLng = markerData.position; // 선택된 위도/경도 저장
+            selectedDuration = markerData.duration;
+            selectedAddr = markerData.address;
 
             console.log("마커 선택됨:", selectedMarkerId);
 
@@ -227,7 +235,26 @@
             // 출발 버튼 비활성화 (한 번만 사용 가능하도록)
             document.getElementById('startButton').disabled = true;
 
-            //*** 여기에 시작시각 로그 로직***//
+            // AJAX 요청으로 데이터 전송
+            fetch('/save-start-location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    clientId:clientId,
+                    hospitalName: selectedMarkerId,
+                    duration: selectedDuration,
+                    address : selectedAddr
+                })
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error("서버 응답 실패");
+                        }
+                    })
         }
     });
 
@@ -236,7 +263,26 @@
         console.log("도착 버튼 클릭됨.");
         alert(selectedMarkerId+" 도착 완료!");
 
-        //*** 여기에 도착시각 로그 로직***//
+        // GET 방식으로 데이터 전송
+        const url = new URL('/save-end-location', window.location.origin); //
+        url.searchParams.append('clientId', clientId); // 쿼리 매개변수 추가
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("서버 응답 실패");
+                    }
+                })
+                .then(data => console.log(data)) // 성공적으로 응답 처리
+                .catch(error => console.error(error)); // 에러 처리
+
     });
 
     // 네이버맵 길찾기 버튼 클릭 이벤트

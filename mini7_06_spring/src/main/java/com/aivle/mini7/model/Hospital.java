@@ -18,6 +18,9 @@ public class Hospital {
     private Integer number;
 
     @Column(nullable=false)
+    private String name;
+
+    @Column(nullable=false)
     private String address;
 
     @Column(nullable=false)
@@ -30,10 +33,10 @@ public class Hospital {
     private String type;
 
     @Column(nullable=false)
-    private Integer distance;
+    private Double distance;
 
     @Column(nullable=false)
-    private String duration;
+    private Integer duration;
 
     @ManyToOne
     @JoinColumn(name="id")//@JoinColumn(name="외래키이름")

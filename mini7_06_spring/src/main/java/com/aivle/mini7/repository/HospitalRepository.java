@@ -1,7 +1,18 @@
 package com.aivle.mini7.repository;
 
+import com.aivle.mini7.client.dto.HospitalInfoResponse;
+import com.aivle.mini7.dto.HospitalDto;
 import com.aivle.mini7.model.Hospital;
+import com.aivle.mini7.model.Log2;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-public interface HospitalRepository extends JpaRepository<Hospital, String> {
+import java.util.List;
+
+@Repository
+public interface HospitalRepository extends JpaRepository<Hospital, Integer> {
+    @Query("SELECT h FROM Hospital h WHERE h.log2.id = :log2Id")
+    List<Hospital> findByLog2Id(@Param("log2Id") Integer log2Id);
 }
