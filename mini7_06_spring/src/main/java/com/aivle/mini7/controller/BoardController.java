@@ -1,10 +1,12 @@
 package com.aivle.mini7.controller;
 
+import com.aivle.mini7.model.Comment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.aivle.mini7.model.Board;
 import com.aivle.mini7.repository.BoardRepository;
+import com.aivle.mini7.repository.CommentRepository;
 import com.aivle.mini7.service.BoardService;
 import com.aivle.mini7.dto.BoardDto;
 
@@ -29,6 +31,7 @@ public class BoardController {
 
 	private final BoardService boardService;
 	private final BoardRepository boardRepository;
+	private final CommentRepository commentRepository;
 
 	// 새 글 작성 페이지
 	@GetMapping("/new")
@@ -58,9 +61,11 @@ public class BoardController {
 			Board board = boardRepository.findById(id)
 					.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 			model.addAttribute("board", board);
+
+
 			String formattedCreateTime = board.getCreateTime().format(formatter);
 			String formattedUpdateTime = board.getUpdateTime() != null ? board.getUpdateTime().format(formatter) : null;
 			// 수정 시간이 존재하면 추가
