@@ -41,6 +41,14 @@ class Project0606:
             content = file.read()
             self.conf['summary_system_role'] = content
 
+        with open(self.conf['summary_emergency_path'], 'r', encoding='utf-8') as file:
+            content = file.read()
+            self.conf['summary_emergency'] = content
+            
+        with open(self.conf['summary_not_emergency_path'], 'r', encoding='utf-8') as file:
+            content = file.read()
+            self.conf['summary_not_emergency'] = content
+
     def audio_to_text(self, path):
         # 오디오 파일을 읽어서, 위스퍼를 사용한 변환
         with open(path, 'rb') as audio_file:
@@ -54,14 +62,16 @@ class Project0606:
         # 결과 반환
         return transcript
 
-    def text_summary(self, input_txt):
+    # type에는 다음과 같이 넣으면 된다.
+    # summary_system_role, summary_emergency, summary_not_emergency
+    def text_summary(self, input_txt, type='summary_system_role'):
         # 입력데이터를 GPT-3.5-turbo에 전달하고 답변 받아오기
         response = self.client_summary.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {
                     "role": "system",
-                    "content": self.conf['summary_system_role']
+                    "content": self.conf[type]
                 },
                 {
                     "role": "user",

@@ -3,6 +3,8 @@
     "model_directory": "./fine_tuned_bert",
     "duty_path": "./dutylist.csv",
     "summary_system_role_path": "./summary_system_role.conf",
+    "summary_emergency_path": "./summary_emergency.conf",
+    "summary_not_emergency_path": "./summary_not_emergency.conf",
     "naver_client_id": "",
     "naver_client_secret": "",
     "haversine_count": 5,
