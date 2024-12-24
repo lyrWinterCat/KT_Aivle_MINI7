@@ -14,29 +14,29 @@ public class Log2Dto {
     public static class ResponseList {
         private Integer id;
         private String datetime;
-        private String em_latitude;
-        private String em_longitude;
-        private Integer em_class;
-        private String em_text;
-        private String hospitallist;
-        private String hospital;
-        private String hospitalloc;
-        private String exptime;
-        private String realtime;
+        private String latitude;
+        private String longitude;
+        private String startAddress;
+        private Integer emergencyGrade;
+        private String description;
+        private String hospitalName;
+        private String address;
+        private String duration;
+        private String real_duration;
 
-        public static Log2Dto.ResponseList of(Log2 log2){
+        public static ResponseList of(Log2 log2){
             return ResponseList.builder()
                     .id(log2.getId())
                     .datetime(log2.getDatetime())
-                    .em_latitude(log2.getEm_latitude())
-                    .em_longitude(log2.getEm_longitude())
-                    .em_class(log2.getEm_class())
-                    .em_text(log2.getEm_text())
-                    .hospitallist(log2.getHospitallist())
-                    .hospital(log2.getHospital())
-                    .hospitalloc(log2.getHospitalloc())
-                    .exptime(log2.getExptime())
-                    .realtime(log2.getRealtime())
+                    .latitude(log2.getLatitude())
+                    .longitude(log2.getLongitude())
+                    .startAddress(log2.getStartAddress())
+                    .emergencyGrade(log2.getEmergencyGrade())
+                    .description(log2.getDescription())
+                    .hospitalName(log2.getHospitalName())
+                    .address(log2.getAddress())
+                    .duration(log2.getDuration())
+                    .real_duration(log2.getReal_duration())
                     .build();
         }
     }

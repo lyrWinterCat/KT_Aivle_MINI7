@@ -1,5 +1,6 @@
 package com.aivle.mini7.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,29 +21,33 @@ public class Log2 {
     private String datetime;
 
     @Column(nullable = false)
-    private String em_latitude;
+    private String latitude;
 
     @Column(nullable = false)
-    private String em_longitude;
+    private String longitude;
 
     @Column(nullable = false)
-    private Integer em_class;
+    private String startAddress;
 
     @Column(nullable = false)
-    private String em_text;
+    private Integer emergencyGrade;
 
     @Column(nullable = false)
-    private String hospitallist;
+    private String description;
 
     @Column(nullable = false)
-    private String hospital;
+    private String hospitalName;
 
     @Column(nullable = false)
-    private String hospitalloc;
+    private String address;
 
     @Column(nullable = false)
-    private String exptime;
+    private String duration;
 
     @Column(nullable = false)
-    private String realtime;
+    private String real_duration;
+    //foreign
+    @OneToOne
+    @JsonManagedReference
+    private recommandHospital index;
 }
