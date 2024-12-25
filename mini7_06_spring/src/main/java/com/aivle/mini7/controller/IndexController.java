@@ -32,11 +32,15 @@ public class IndexController {
     private final FastApiClient fastApiClient;
     private final Log2Service logService;
 
+    @Value("${app.base-url}")
+    private String baseUrl;
+
     @Value("${naver.map.client-id}")
     private String mapClientId; // application.properties에서 API 키 불러오기
 
-    @GetMapping("/")
+    @GetMapping("")
     public String index(Model model) {
+        model.addAttribute("baseUrl", baseUrl);
         model.addAttribute("title", "병원 추천 요청"); // title 변수를 추가
         model.addAttribute("username", "user");
         return "emergencyReport";
@@ -45,6 +49,7 @@ public class IndexController {
     //  erergency신고페이지 테스트
     @GetMapping("/emergencyReport")
     public String emergencyReport(Model model) {
+        model.addAttribute("baseUrl", baseUrl);
         model.addAttribute("title", "병원 추천 요청"); // title 변수를 추가
         model.addAttribute("username", "user");
         return "emergencyReport"; // templates/emergencyReport.mustache
@@ -60,6 +65,7 @@ public class IndexController {
                                            @RequestParam("text") String text,
                                            @RequestParam("lat") Double lat,
                                            @RequestParam("lon") Double lon) {
+
         // HospitalRequest 객체 생성
         HospitalRequest request = new HospitalRequest(navercount, text, lat, lon);
 
@@ -124,7 +130,7 @@ public class IndexController {
     public ModelAndView emergency(HospitalResponse hospitalResponse, Double lat, Double lon,int client_id){
         // 모델 생성
         ModelAndView mv = new ModelAndView("emergency"); // notEmergency.mustache 템플릿 반환
-
+        mv.addObject("baseUrl",baseUrl);
         // 응급 등급 및 프롬프트 메시지 설정
         mv.addObject("emergencyLevel", hospitalResponse.getEmergencyGrade());
         mv.addObject("promptContent", hospitalResponse.getDescription().replace("\n", "<br>")); // 줄바꿈을 <br>로 변환
@@ -151,7 +157,7 @@ public class IndexController {
     public ModelAndView notEmergency(HospitalResponse hospitalResponse) {
         // 모델 생성
         ModelAndView mv = new ModelAndView("notEmergency"); // notEmergency.mustache 템플릿 반환
-
+        mv.addObject("baseUrl",baseUrl);
         // 응급 등급 및 프롬프트 메시지 설정
         mv.addObject("emergencyLevel", hospitalResponse.getEmergencyGrade());
         mv.addObject("promptContent", hospitalResponse.getDescription().replace("\n", "<br>")); // 줄바꿈을 <br>로 변환
