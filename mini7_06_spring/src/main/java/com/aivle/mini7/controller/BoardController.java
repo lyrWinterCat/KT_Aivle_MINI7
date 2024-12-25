@@ -123,7 +123,7 @@ public class BoardController {
 				model.addAttribute("formattedUpdateTIme", formattedCreateTime);
 			}
 
-            return "/board/detail"; // 상세 보기 템플릿 경로
+            return "board/detail"; // 상세 보기 템플릿 경로
         } catch (NumberFormatException e) {
             model.addAttribute("errorMessage", "잘못된 게시글 ID 형식입니다.");
             return "errorPage"; // 에러 페이지 템플릿
