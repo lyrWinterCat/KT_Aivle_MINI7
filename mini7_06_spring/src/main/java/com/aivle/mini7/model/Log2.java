@@ -33,24 +33,31 @@ public class Log2 {
     @Column(nullable = false)
     private Double longitude;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String startAddress;
 
     @Column(nullable = false)
     private Integer emergencyGrade;
 
+    @Column(nullable = true)
     private String description;
 
+    @Column(nullable = true)
     private String hospitalName;
 
+    @Column(nullable = true)
     private String address;
 
+    @Column(nullable = true)
     private Integer duration;
 
+    @Column(nullable = true)
     private Integer real_duration;
 
+    @Column(nullable = true)
     private String start_time;
 
+    @Column(nullable = true)
     private String end_time;
 
 
