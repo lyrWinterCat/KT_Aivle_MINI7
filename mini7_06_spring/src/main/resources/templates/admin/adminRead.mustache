@@ -16,46 +16,45 @@
                         </div>
                     </div>
                     <div class="row">
-                        <table class="table table-hover">
-                            <thead style="background-color: #afcffc">
-                            <tr>
-
-                                <th>ID</th>
-                                <th>조회시각</th>
-                                <th>입력위도</th>
-                                <th>입력경도</th>
-                                <th>응급등급</th>
-                                <th>병원</th>
-                                <th>병원위치</th>
-                                <th>출발시각</th>
-                                <th>도착시각</th>
-                                <th>예상이동시간</th>
-                                <th>실제이동시간</th>
-                            </tr>
-                            </thead>
-                            <tbody id="data-table">
-                            {{#logPage.content}}
-                                <!-- 데이터 반복 -->
-                                <tr data-pk="{{id}}" data-input-text="{{input_text}}"
-                                    data-description="{{description}}">
-                                    <td>{{id}}</td>
-                                    <td>{{datetime}}</td>
-                                    <td>{{latitude}}</td>
-                                    <td>{{longitude}}</td>
-                                    <td>{{emergencyGrade}}</td>
-                                    <td>{{#hospitalName}}{{hospitalName}}{{/hospitalName}}{{^hospitalName}}
-                                        --{{/hospitalName}}</td>
-                                    <td>{{#address}}{{address}}{{/address}}{{^address}}--{{/address}}</td>
-                                    <td>{{#start_time}}{{start_time}}{{/start_time}}{{^start_time}}
-                                        --{{/start_time}}</td>
-                                    <td>{{#end_time}}{{end_time}}{{/end_time}}{{^end_time}}--{{/end_time}}</td>
-                                    <td>{{#duration}}{{duration}}{{/duration}}{{^duration}}--{{/duration}}</td>
-                                    <td>{{#real_duration}}{{real_duration}}{{/real_duration}}{{^real_duration}}
-                                        --{{/real_duration}}</td>
+                        <div class="table-responsive"> <!-- 테이블에 가로 스크롤 추가 -->
+                            <table class="table table-hover ">
+                                <thead style="background-color: #afcffc">
+                                <tr>
+                                    <th class="text-nowrap">ID</th>
+                                    <th class="text-nowrap">조회시각</th>
+                                    <th class="text-nowrap">신고위치</th>
+                                    <th class="text-nowrap">응급등급</th>
+                                    <th class="text-nowrap">병원</th>
+                                    <th class="text-nowrap">병원위치</th>
+                                    <th class="text-nowrap">출발시각</th>
+                                    <th class="text-nowrap">도착시각</th>
+                                    <th class="text-nowrap">예상시간</th>
+                                    <th class="text-nowrap">실제시간</th>
                                 </tr>
-                            {{/logPage.content}}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody id="data-table">
+                                {{#logPage.content}}
+                                    <!-- 데이터 반복 -->
+                                    <tr data-pk="{{id}}" data-input-text="{{input_text}}"
+                                        data-description="{{description}}">
+                                        <td>{{id}}</td>
+                                        <td>{{datetime}}</td>
+                                        <td>{{startAddress}}</td>
+                                        <td>{{emergencyGrade}}</td>
+                                        <td>{{#hospitalName}}{{hospitalName}}{{/hospitalName}}{{^hospitalName}}
+                                            --{{/hospitalName}}</td>
+                                        <td>{{#address}}{{address}}{{/address}}{{^address}}--{{/address}}</td>
+                                        <td>{{#start_time}}{{start_time}}{{/start_time}}{{^start_time}}
+                                            --{{/start_time}}</td>
+                                        <td>{{#end_time}}{{end_time}}{{/end_time}}{{^end_time}}--{{/end_time}}</td>
+                                        <td>{{#duration}}{{duration}}분{{/duration}}{{^duration}}--{{/duration}}</td>
+                                        <td>{{#real_duration}}{{real_duration}}분{{/real_duration}}{{^real_duration}}
+                                            --{{/real_duration}}</td>
+                                    </tr>
+                                {{/logPage.content}}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <!-- 페이징 버튼 -->
@@ -136,7 +135,7 @@
                             <div><h4>Recommended Hospital</h4><div>
 
                     </div>
-                <table class="table table-hover mt-3">
+                <table class="table table-hover mt-3 text-center">
                     <thead style="background-color: #afcffc">
                         <tr>
                             <th>#</th>
