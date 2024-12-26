@@ -136,6 +136,7 @@ public class IndexController {
         //내위치
         mv.addObject("myLat", lat);
         mv.addObject("myLng", lon);
+        mv.addObject("source_addr", hospitalResponse.getSourceAddr());
 
         //map api id
         mv.addObject("mapClientId",mapClientId);
