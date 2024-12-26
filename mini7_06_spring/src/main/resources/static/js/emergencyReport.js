@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('음성 인식 오류:', event.error);
         alert("마이크를 사용할 수 없습니다. 현재 증상을 입력해주세요."); // 오류 알림
         resultText.focus(); // 텍스트 영역으로 포커스 이동
-//        RecBtn.classList.toggle("recording");
     };
 
     // 음성 인식 종료 후 처리
@@ -68,4 +67,19 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log('음성 인식 종료');
         RecBtn.classList.toggle("recording");
     };
+
+    // ------------ 제출 버튼 비활성화 기능 추가 ------------
+    const form = document.querySelector('form');
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function() {
+        // 제출 버튼을 비활성화
+        submitButton.disabled = true;
+        submitButton.textContent = '제출 중...'; // 버튼 텍스트 변경 (선택 사항)
+
+        // 폼 제출을 계속 진행
+        setTimeout(() => {
+            form.submit();
+        }, 100); // 100ms 후에 폼 제출
+    });
 });
