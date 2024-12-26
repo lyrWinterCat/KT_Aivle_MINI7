@@ -135,23 +135,26 @@
                             <div><h4>Recommended Hospital</h4><div>
 
                     </div>
+<div class="table-responsive"> <!-- 테이블에 가로 스크롤 추가 -->
                 <table class="table table-hover mt-3 text-center">
                     <thead style="background-color: #afcffc">
                         <tr>
                             <th>#</th>
-                            <th>병원 이름</th>
-                            <th>주소</th>
-                            <th>전화번호1</th>
-                            <th>전화번호2</th>
-                            <th>유형</th>
-                            <th>거리</th>
-                            <th>예상 시간</th>
+                            <th class="text-nowrap">병원 이름</th>
+                            <th class="text-nowrap">주소</th>
+                            <th class="text-nowrap">전화번호1</th>
+                            <th class="text-nowrap">전화번호2</th>
+                            <th class="text-nowrap">유형</th>
+                            <th class="text-nowrap" >거리</th>
+                            <th class="text-nowrap">예상 시간</th>
                         </tr>
                     </thead>
                     <tbody>`;
                     var tableFooter = `
                     </tbody>
-                </table>`;
+                </table>
+                </div>`
+                    ;
 
 
                     var tableRows = '';
