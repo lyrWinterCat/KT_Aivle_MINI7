@@ -100,7 +100,9 @@
         </main>
 
         <div id="customAlert"
-             style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:#f1f6f3; color:#000000; padding:20px; border:2px solid #638660; border-radius:5px;">
+             style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
+             background-color:#f1f6f3; color:#000000; padding:20px; border:2px solid #638660;
+             border-radius:5px; opacity:0; transition: opacity 0.3s ease-in-out;">
             <p id="arrive_hospital"></p>
 
             <div class="text-end">
@@ -117,15 +119,34 @@
 
 <script>
     //커스컴 alert
+    // 커스텀 alert 표시 함수
     function showCustomAlert(message1, message2) {
+        const alertBox = document.getElementById("customAlert");
+
+        // 메시지 설정
         document.getElementById("arrive_hospital").innerText = message1;
         document.getElementById("move_board").innerText = message2;
-        document.getElementById("customAlert").style.display = "block";
+
+        // 알림 창 표시 (애니메이션 시작)
+        alertBox.style.display = "block"; // 먼저 display를 block으로 설정
+        setTimeout(() => {
+            alertBox.style.opacity = "1"; // 투명도를 1로 설정하여 나타나도록 함
+        }, 5); // 약간의 지연을 주어 transition 적용
     }
 
+    // 커스텀 alert 닫기 함수
     function closeAlert() {
-        document.getElementById("customAlert").style.display = "none";
+        const alertBox = document.getElementById("customAlert");
+
+        // 애니메이션 적용 (닫히는 효과)
+        alertBox.style.opacity = "0"; // 투명도를 0으로 설정하여 사라지도록 함
+
+        // 애니메이션 완료 후 display:none 처리
+        setTimeout(() => {
+            alertBox.style.display = "none";
+        }, 300); // transition 시간과 동일하게 설정 (0.5초)
     }
+
 
 </script>
 
