@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -58,7 +63,7 @@ public class AdminController {
     // 관리자 페이지
     @GetMapping("/read")
     public ModelAndView adminRead(Model model,
-                                  @RequestParam(name = "page", defaultValue = "0") int page,
+                                  @RequestParam(name = "page", defaultValue = "1") int page,
                                   HttpSession session) {
         model.addAttribute("baseUrl", baseUrl);
         model.addAttribute("title", "Admin");
@@ -70,14 +75,26 @@ public class AdminController {
             return new ModelAndView("redirect:/admin"); // 비로그인 상태면 로그인 페이지로 리다이렉트
         }
 
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page-1, 5);
         Page<LogDto.ResponseList> logPage = logService.getLogList(pageable);
 
+        //페이지네이션
+        int totalPages = logPage.getTotalPages();
+
+        List<Map<String, Object>> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                        .mapToObj(pageNum -> {
+                            Map<String, Object> pageMap = new HashMap<>();
+                            pageMap.put("pageNumber", pageNum);
+                            pageMap.put("isCurrentPage",pageNum == page);
+                            return pageMap;
+                        }).toList();
+
         model.addAttribute("logPage", logPage);
-        model.addAttribute("prev", pageable.previousOrFirst().getPageNumber());
-        model.addAttribute("next", pageable.next().getPageNumber());
+        model.addAttribute("prev", page > 1 ? page - 1 : 1);
+        model.addAttribute("next", page < totalPages ? page + 1 : totalPages);
         model.addAttribute("hasNext", logPage.hasNext());
         model.addAttribute("hasPrev", logPage.hasPrevious());
+        model.addAttribute("pageNumbers", pageNumbers);
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("admin/adminRead");
