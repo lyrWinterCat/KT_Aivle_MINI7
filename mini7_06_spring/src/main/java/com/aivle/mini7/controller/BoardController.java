@@ -88,20 +88,18 @@ public class BoardController {
     @GetMapping("/{boardId}/edit")
     public String editBoardForm(@PathVariable("boardId") Long boardId, Model model) {
 		model.addAttribute("baseUrl", baseUrl);
-
 		model.addAttribute("title", "게시글 수정");
         model.addAttribute("username", "LYR");
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         model.addAttribute("board", board);
-        return "/board/edit"; // 템플릿 파일 이름
+        return "board/edit"; // 템플릿 파일 이름
     }
 
 	// 게시글 상세 페이지
 	@GetMapping("/{boardId}")
 	public String getBoard(@PathVariable("boardId") String boardId, Model model) {
 		model.addAttribute("baseUrl", baseUrl);
-
 		model.addAttribute("title", "게시글");
         model.addAttribute("username", "LYR");
         try {
@@ -113,9 +111,9 @@ public class BoardController {
 
 			model.addAttribute("board", board);
 
-
 			String formattedCreateTime = board.getCreateTime().format(formatter);
 			String formattedUpdateTime = board.getUpdateTime() != null ? board.getUpdateTime().format(formatter) : null;
+
 			// 수정 시간이 존재하면 추가
 			if (board.getUpdateTime() != null) {
 				model.addAttribute("formattedUpdateTime", formattedUpdateTime);
@@ -136,13 +134,11 @@ public class BoardController {
 	public String getBoardList(Model model,
 							   @RequestParam(name = "page", defaultValue = "1") int page) {
 		model.addAttribute("baseUrl", baseUrl);
-
 		// 페이지 요청 준비 (Spring Data Pageable)
 		Pageable pageable = PageRequest.of(page - 1, 10);
 		model.addAttribute("title", "게시판 목록"); // title 변수를 추가
 		model.addAttribute("username", "LYR");
 		Page<Board> boardPage = boardRepository.findAll(pageable);
-
 
 
 		int totalPages = boardPage.getTotalPages(); // 전체 페이지 수
