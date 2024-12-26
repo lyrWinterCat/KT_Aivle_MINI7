@@ -8,7 +8,7 @@
           margin: 0; /* 여백 제거 */
           padding: 0; /* 여백 제거 */
           width: 100vw; /* 뷰포트 너비 */
-          height: 100vh; /* 뷰포트 높이 */
+          height: 90vh; /* 뷰포트 높이 */
           overflow-x: hidden; /* 가로 스크롤 방지 */
       }
 
@@ -28,9 +28,9 @@
 
             background-color: white;
             border-radius: 2em;
-            padding: 25px 30px;
-            width: 80%;
-            max-width: 600px;
+            padding: 20px 20px;
+            width: 70%;
+            max-width: 500px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
         }
 

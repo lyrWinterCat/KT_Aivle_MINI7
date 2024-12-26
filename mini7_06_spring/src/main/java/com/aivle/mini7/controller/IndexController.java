@@ -146,7 +146,7 @@ public class IndexController {
         //client id
         mv.addObject("client_id",client_id);
 
-        mv.addObject("title", "응급상황");
+        mv.addObject("title", "응급상황 안내");
         mv.addObject("username", "user");
 
         return mv;
@@ -163,7 +163,7 @@ public class IndexController {
         mv.addObject("promptContent", hospitalResponse.getDescription().replace("\n", "<br>")); // 줄바꿈을 <br>로 변환
         mv.addObject("hospitalList", hospitalResponse.getDutyList()); // 병원 리스트 설정
 
-        mv.addObject("title", "응급상황 아님");
+        mv.addObject("title", "비응급상황 안내");
         mv.addObject("username", "user");
 
         return mv;
