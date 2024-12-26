@@ -17,8 +17,8 @@ public class HospitalDto {
         private String tel1;
         private String tel2;
         private String type;
-        private Integer distance;
-        private String duration;
+        private Double distance;
+        private int duration;
         private Log2 logs;
 
         public static ResponseList of(Hospital hospital){

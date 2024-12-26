@@ -2,51 +2,8 @@
 {{> nav}}
 
 <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{mapClientId}}"></script>
-<style>
-    /* 동그라미 스타일 */
-    .em_cls_circle {
-        width: 80px; /* 동그라미의 너비 */
-        height: 80px; /* 동그라미의 높이 */
-        border-radius: 50%; /* 동그라미 모양 */
-        border: solid 5px #f86e6e;
-        /*border-color: #f86e6e; !* 배경색 (빨간색) *!*/
-        color: black; /* 텍스트 색상 */
-        display: flex; /* Flexbox로 내부 요소 정렬 */
-        justify-content: center; /* 수평 중앙 정렬 */
-        align-items: center; /* 수직 중앙 정렬 */
-        font-size: 30px; /* 텍스트 크기 */
-        font-weight: bold; /* 텍스트 굵기 */
-    }
+<link rel="stylesheet" href="/css/emergency.css">
 
-    /* 세로 분리선 스타일 */
-    .border-end {
-        border-right: 1px solid #ddd !important;
-    }
-
-    /* 말풍선 스타일 */
-    .speech-bubble {
-        position: relative;
-        background-color: rgba(202, 220, 191, 0.92); /* 말풍선 배경색 (Bootstrap light 색상) */
-        /*border: 1px solid #ddd; !* 말풍선 테두리 색상 *!*/
-        border-radius: 10px; /* 둥근 모서리 */
-        padding: 10px 15px; /* 텍스트 여백 */
-        color: #333; /* 텍스트 색상 */
-        font-size: 14px;
-    }
-
-    /* 말풍선 뾰족한 부분 (왼쪽) */
-    .speech-bubble::before {
-        content: '';
-        position: absolute;
-        top: 10px; /* 뾰족한 부분의 위치 조정 (말풍선 위쪽 기준) */
-        left: -10px; /* 뾰족한 부분이 왼쪽으로 나오도록 설정 */
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 10px 10px 10px 0;
-        border-color: transparent rgba(202, 220, 191, 0.92) transparent transparent; /* 배경색과 동일하게 설정 */
-    }
-</style>
 <div id="layoutSidenav">
     {{> sidenav}}
     <div id="layoutSidenav_content">
@@ -95,7 +52,7 @@
                                 <th scope="col">전화번호1</th>
                                 <th scope="col">전화번호2</th>
                                 <th scope="col">센터</th>
-                                <th scope="col">거리(km)</th>
+                                <th scope="col">거리</th>
                                 <th scope="col">예상 시간</th>
                             </tr>
                             </thead>
@@ -109,7 +66,7 @@
                                 <td>{{phoneNumber1}}</td>
                                 <td>{{phoneNumber3}}</td>
                                 <td>{{emergencyMedicalInstitutionType}}</td>
-                                <td>{{distance}}</td>
+                                <td>{{distance}}km</td>
                                 <td>{{duration}}분</td></tr>
                             </tbody>
                             {{/hospitalList}}
@@ -148,6 +105,7 @@
 
     var myLat = {{myLat}}; // 위도
     var myLng = {{myLng}}; // 경도
+    var clientId = {{client_id}};
 
     // 네이버 지도 초기화
     var mapOptions = {
@@ -160,13 +118,18 @@
         {{#hospitalList}}
         markers.push({
             id: "{{hospitalName}}", // hospitalName을 문자열로 처리
-            position: new naver.maps.LatLng({{latitude}}, {{longitude}})
+            position: new naver.maps.LatLng({{latitude}}, {{longitude}}),
+            duration : "{{duration}}",
+            address : "{{address}}"
+
         });
         {{/hospitalList}}
 
 
     var selectedMarkerId = null; // 선택된 마커 ID 저장
     var selectedLatLng = null; // 선택된 마커의 위도와 경도 저장
+    var selectedAddr = null;
+    var selectedDuration = null;
 
     // InfoWindow 객체 생성
     var infoWindow = new naver.maps.InfoWindow({
@@ -198,6 +161,8 @@
         naver.maps.Event.addListener(marker, 'click', function() {
             selectedMarkerId = markerData.id; // 선택된 마커 ID 저장
             selectedLatLng = markerData.position; // 선택된 위도/경도 저장
+            selectedDuration = markerData.duration;
+            selectedAddr = markerData.address;
 
             console.log("마커 선택됨:", selectedMarkerId);
 
@@ -227,7 +192,26 @@
             // 출발 버튼 비활성화 (한 번만 사용 가능하도록)
             document.getElementById('startButton').disabled = true;
 
-            //*** 여기에 시작시각 로그 로직***//
+            // AJAX 요청으로 데이터 전송
+            fetch('/save-start-location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    clientId:clientId,
+                    hospitalName: selectedMarkerId,
+                    duration: selectedDuration,
+                    address : selectedAddr
+                })
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error("서버 응답 실패");
+                        }
+                    })
         }
     });
 
@@ -236,7 +220,26 @@
         console.log("도착 버튼 클릭됨.");
         alert(selectedMarkerId+" 도착 완료!");
 
-        //*** 여기에 도착시각 로그 로직***//
+        // GET 방식으로 데이터 전송
+        const url = new URL('/save-end-location', window.location.origin); //
+        url.searchParams.append('clientId', clientId); // 쿼리 매개변수 추가
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("서버 응답 실패");
+                    }
+                })
+                .then(data => console.log(data)) // 성공적으로 응답 처리
+                .catch(error => console.error(error)); // 에러 처리
+
     });
 
     // 네이버맵 길찾기 버튼 클릭 이벤트

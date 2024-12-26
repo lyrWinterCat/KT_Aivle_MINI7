@@ -1,10 +1,16 @@
       body {
-            background-color: #0b3a6a; /* 연한 배경색 */
-            background-image: url(https://greeense.github.io/portfolio/image/hospital.jpg); /* 배경 이미지 URL 추가 필요 */
-            background-repeat: no-repeat;
-            background-size: cover;
-            width: 100vw;
-        }
+          background-color: #0b3a6a; /* 연한 배경색 */
+          background-image: url(https://i.ibb.co/RNY2Cp0/hospital.webp); /* 배경 이미지 URL 추가 필요 */
+          background-repeat: no-repeat; /* 이미지 반복 없음 */
+          background-size: cover; /* 화면 전체를 꽉 채움 */
+          background-position: center center; /* 이미지를 중앙에 위치 */
+          background-attachment: fixed; /* 스크롤 시 배경 고정 */
+          margin: 0; /* 여백 제거 */
+          padding: 0; /* 여백 제거 */
+          width: 100vw; /* 뷰포트 너비 */
+          height: 100vh; /* 뷰포트 높이 */
+          overflow-x: hidden; /* 가로 스크롤 방지 */
+      }
 
         .container {
             height: 100vh;

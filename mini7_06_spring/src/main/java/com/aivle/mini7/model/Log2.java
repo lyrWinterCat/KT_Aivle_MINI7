@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,32 +24,42 @@ public class Log2 {
     @Column(nullable=false)
     private String datetime;
 
-    @Column(nullable = false)
-    private String latitude;
+    @Column(nullable=false)
+    private String inputText;
 
     @Column(nullable = false)
-    private String longitude;
+    private Double latitude;
 
     @Column(nullable = false)
+    private Double longitude;
+
+    @Column(nullable = true)
     private String startAddress;
 
     @Column(nullable = false)
     private Integer emergencyGrade;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String hospitalName;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String address;
 
-    @Column(nullable = false)
-    private String duration;
+    @Column(nullable = true)
+    private Integer duration;
 
-    @Column(nullable = false)
-    private String real_duration;
+    @Column(nullable = true)
+    private Integer real_duration;
+
+    @Column(nullable = true)
+    private String start_time;
+
+    @Column(nullable = true)
+    private String end_time;
+
 
     @OneToMany(mappedBy = "log2")
     @JsonManagedReference

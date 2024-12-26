@@ -5,24 +5,24 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Service</div>
-                <a class="nav-link" href="/emergencyReport">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-notes-medical"></i></div>
-                    EmergencyReport
+                <a class="nav-link" href="{{baseUrl}}/emergencyReport">
+                    <div class="sb-nav-link-icon"><i class="fa-regular fa-hospital"></i></div>
+                    응급 상황 신고
                 </a>
-                <a class="nav-link" href="/emergencyReport">
-                    <div class="sb-nav-link-icon"><i class="fa-regular fa-calendar"></i></div>
-                    Dashboard
+                <div class="sb-sidenav-menu-heading">board</div>
+                <a class="nav-link" href="{{baseUrl}}/board/list" >
+                    <div class="sb-nav-link-icon"><i class="fa-regular fa-clipboard"></i></div>
+                    게시판 목록
                 </a>
-                <a class="nav-link" href="/emergencyReport">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-book"></i></div>
-                    Log
+                <a class="nav-link" href="{{baseUrl}}/board/new">
+                    <div class="sb-nav-link-icon"><i class="fa-regular fa-pen-to-square"></i></div>
+                    새 게시글 작성
                 </a>
-<!--                <div class="sb-sidenav-menu-heading">Interface</div>-->
-<!--                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">-->
-<!--                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>-->
-<!--                    Layouts-->
-<!--                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
-<!--                </a>-->
+                <div class="sb-sidenav-menu-heading">Admin</div>
+                <a class="nav-link" href="{{baseUrl}}/admin">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-lock"></i></div>
+                    관리자 조회
+                </a>
                 <!-- 나머지 사이드 네비게이션 메뉴 -->
             </div>
         </div>
