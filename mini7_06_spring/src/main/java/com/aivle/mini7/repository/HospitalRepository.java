@@ -1,9 +1,6 @@
 package com.aivle.mini7.repository;
 
-import com.aivle.mini7.client.dto.HospitalInfoResponse;
-import com.aivle.mini7.dto.HospitalDto;
 import com.aivle.mini7.model.Hospital;
-import com.aivle.mini7.model.Log2;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,8 +1,7 @@
 package com.aivle.mini7.controller;
 
-import com.aivle.mini7.dto.Log2Dto;
-import com.aivle.mini7.model.Log2;
-import com.aivle.mini7.service.Log2Service;
+import com.aivle.mini7.dto.LogDto;
+import com.aivle.mini7.service.LogService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final Log2Service logService;
+    private final LogService logService;
 
     @Value("${app.base-url}")
     private String baseUrl;
@@ -72,7 +71,7 @@ public class AdminController {
         }
 
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Log2Dto.ResponseList> logPage = logService.getLogList(pageable);
+        Page<LogDto.ResponseList> logPage = logService.getLogList(pageable);
 
         model.addAttribute("logPage", logPage);
         model.addAttribute("prev", pageable.previousOrFirst().getPageNumber());

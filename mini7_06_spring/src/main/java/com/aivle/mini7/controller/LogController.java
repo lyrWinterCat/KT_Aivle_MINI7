@@ -2,7 +2,7 @@ package com.aivle.mini7.controller;
 
 import com.aivle.mini7.client.dto.StartHospitalDto;
 import com.aivle.mini7.model.Hospital;
-import com.aivle.mini7.service.Log2Service;
+import com.aivle.mini7.service.LogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LogController {
 
-    private final Log2Service log2Service;
+    private final LogService logService;
 
     @PostMapping("/save-start-location")
     public ResponseEntity<String> saveStartLocation(@RequestBody Map<String, Object> requestData) {
@@ -29,20 +29,20 @@ public class LogController {
 
         StartHospitalDto dto = new StartHospitalDto(clientId,hospitalName,address,duration);
         // 데이터베이스에 저장
-        log2Service.updateStartHospital(dto);
+        logService.updateStartHospital(dto);
 
         return ResponseEntity.ok("출발 LOG UPDATE");
     }
 
     @GetMapping("/save-end-location")
     public ResponseEntity<String> saveEndLocation(@RequestParam Integer clientId){
-        log2Service.updateEndHospital(clientId);
+        logService.updateEndHospital(clientId);
         return ResponseEntity.ok("도착 LOG UPDATE");
     }
 
     @GetMapping("/log-recommended-hospitals")
     public ResponseEntity<List<Hospital>> getRecommendedHospitals(@RequestParam("pk") Integer pk) {
-        List<Hospital> recommendedHospitals = log2Service.getHospitalList(pk);
+        List<Hospital> recommendedHospitals = logService.getHospitalList(pk);
         return ResponseEntity.ok(recommendedHospitals);
     }
 }

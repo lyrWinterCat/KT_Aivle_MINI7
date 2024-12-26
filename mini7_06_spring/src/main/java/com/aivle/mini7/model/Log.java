@@ -1,60 +1,65 @@
 package com.aivle.mini7.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
+@Entity
+@Table(name ="logs")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "log")
 public class Log {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private String datetime;
 
-    @Column(name = "input_text", nullable = false)
+    @Column(nullable=false)
     private String inputText;
 
-    @Column(name = "input_latitude", nullable = false)
-    private Double inputLatitude;
-
-    @Column(name = "input_longitude", nullable = false)
-    private Double inputLongitude;
-
-    @Column(name = "em_class", nullable = false)
-    private Integer emClass;
+    @Column(nullable = false)
+    private Double latitude;
 
     @Column(nullable = false)
-    private String hospital1;
+    private Double longitude;
+
+    @Column(nullable = true)
+    private String startAddress;
 
     @Column(nullable = false)
-    private String addr1;
+    private Integer emergencyGrade;
 
-    @Column(nullable = false)
-    private String tel1;
+    @Column(nullable = true)
+    private String description;
 
-    @Column(nullable = false)
-    private String hospital2;
+    @Column(nullable = true)
+    private String hospitalName;
 
-    @Column(nullable = false)
-    private String addr2;
+    @Column(nullable = true)
+    private String address;
 
-    @Column(nullable = false)
-    private String tel2;
+    @Column(nullable = true)
+    private Integer duration;
 
-    @Column(nullable = false)
-    private String hospital3;
+    @Column(nullable = true)
+    private Integer real_duration;
 
-    @Column(nullable = false)
-    private String addr3;
+    @Column(nullable = true)
+    private String start_time;
 
-    @Column(nullable = false)
-    private String tel3;
+    @Column(nullable = true)
+    private String end_time;
+
+
+    @OneToMany(mappedBy = "log2")
+    @JsonManagedReference
+    private List<Hospital> hospitals;
 }
