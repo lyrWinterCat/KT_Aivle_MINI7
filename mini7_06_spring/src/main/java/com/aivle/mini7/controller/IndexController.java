@@ -5,8 +5,8 @@ import com.aivle.mini7.client.dto.HospitalInfoResponse;
 import com.aivle.mini7.client.dto.HospitalRequest;
 import com.aivle.mini7.client.dto.HospitalResponse;
 import com.aivle.mini7.model.Hospital;
-import com.aivle.mini7.model.Log2;
-import com.aivle.mini7.service.Log2Service;
+import com.aivle.mini7.model.Log;
+import com.aivle.mini7.service.LogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +27,7 @@ import java.util.List;
 public class IndexController {
 
     private final FastApiClient fastApiClient;
-    private final Log2Service logService;
+    private final LogService logService;
 
     @Value("${app.base-url}")
     private String baseUrl;
@@ -77,7 +74,7 @@ public class IndexController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd HH:mm:ss");
 
         //== log db 저장 ==//
-        Log2 log = Log2.builder()
+        Log log = Log.builder()
                 .inputText(text)
                 .datetime(formatter.format(new Date()))
                 .latitude(lat)
@@ -87,7 +84,7 @@ public class IndexController {
                 .description(hospitalResponse.getDescription())
                 .build();
 
-        Log2 client_log = logService.insertLog(log);
+        Log client_log = logService.insertLog(log);
 
 
         //== hospital db 저장 ==//
@@ -102,7 +99,7 @@ public class IndexController {
                     .type(duty.getEmergencyMedicalInstitutionType())
                     .distance(duty.getDistance())
                     .duration(duty.getDuration())
-                    .log2(client_log)
+                    .log(client_log)
                     .build();
 
             logService.insertHospital(hpt);
@@ -139,6 +136,7 @@ public class IndexController {
         //내위치
         mv.addObject("myLat", lat);
         mv.addObject("myLng", lon);
+        mv.addObject("source_addr", hospitalResponse.getSourceAddr());
 
         //map api id
         mv.addObject("mapClientId",mapClientId);

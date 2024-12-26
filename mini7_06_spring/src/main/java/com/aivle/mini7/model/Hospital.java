@@ -41,5 +41,5 @@ public class Hospital {
     @ManyToOne
     @JoinColumn(name="id")//@JoinColumn(name="외래키이름")
     @JsonBackReference
-    private Log2 log2; //기사-댓글로서 댓글이 자식임
+    private Log log; //기사-댓글로서 댓글이 자식임
 }

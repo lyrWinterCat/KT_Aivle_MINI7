@@ -1,6 +1,6 @@
 package com.aivle.mini7.dto;
 
-import com.aivle.mini7.model.Log2;
+import com.aivle.mini7.model.Log;
 import com.aivle.mini7.model.Hospital;
 import lombok.*;
 
@@ -19,7 +19,7 @@ public class HospitalDto {
         private String type;
         private Double distance;
         private int duration;
-        private Log2 logs;
+        private Log logs;
 
         public static ResponseList of(Hospital hospital){
             return ResponseList.builder()
@@ -30,7 +30,7 @@ public class HospitalDto {
                     .type(hospital.getType())
                     .distance(hospital.getDistance())
                     .duration(hospital.getDuration())
-                    .logs(hospital.getLog2())
+                    .logs(hospital.getLog())
                     .build();
         }
     }
