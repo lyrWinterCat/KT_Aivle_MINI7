@@ -4,7 +4,7 @@
     {{> sidenav}}
     <div id="layoutSidenav_content">
         <main>
-            <div class="container mt-4">
+            <div class="container mt-4" style="max-width: 900px; margin: auto;">
                 {{#board}}
                     <div class="card mb-4 shadow-sm">
                         <!-- Header Section -->
@@ -22,7 +22,7 @@
                         </div>
 
                         <!-- Body Section -->
-                        <div class="card-body">
+                        <div class="card-body"; style="background-color: #f8f9fa;">
                             <p class="card-text" style="white-space: pre-wrap;">{{content}}</p>
                             <hr>
                             <h5>댓글</h5>
@@ -31,7 +31,7 @@
                                     <small class="card-subtitle">
                                         작성자: <strong>{{username}}</strong> |
                                         {{#formattedUpdateTime}}
-                                            수정 시간: {{formattedUpdateTime}}
+                                            수정 시간: {{createTime}}
                                         {{/formattedUpdateTime}}
                                     </small>
                                     <div class="d-flex align-items-center mt-2">

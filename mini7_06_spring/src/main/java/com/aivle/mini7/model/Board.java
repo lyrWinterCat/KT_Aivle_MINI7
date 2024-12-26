@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import java.time.format.DateTimeFormatter;
 
 import java.time.LocalDateTime;
 
@@ -59,5 +60,15 @@ public class Board {
 				null,
 				new ArrayList<>());
     }
+	// Getter 메서드에서 포맷팅
+	public String getFormattedCreateTime() {
+		if (createTime == null) return null;
+		return createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+	}
+
+	public String getFormattedUpdateTime() {
+		if (updateTime == null) return null;
+		return updateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+	}
 }
 
