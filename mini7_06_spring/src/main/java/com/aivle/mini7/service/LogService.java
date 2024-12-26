@@ -56,7 +56,7 @@ public class LogService {
 
     @Transactional(readOnly = true)
     public List<Hospital> getHospitalList(Integer pk) {
-        return hospitalRepository.findByLog2Id(pk); // 수정된 메서드명 사용
+        return hospitalRepository.findByLogId(pk); // 수정된 메서드명 사용
     }
 
     //삽입

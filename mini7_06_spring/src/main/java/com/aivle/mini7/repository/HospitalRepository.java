@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface HospitalRepository extends JpaRepository<Hospital, Integer> {
-    @Query("SELECT h FROM Hospital h WHERE h.log.id = :log2Id")
-    List<Hospital> findByLog2Id(@Param("log2Id") Integer log2Id);
+    @Query("SELECT h FROM Hospital h WHERE h.log.id = :logId")
+    List<Hospital> findByLogId(@Param("logId") Integer logId);
 }
