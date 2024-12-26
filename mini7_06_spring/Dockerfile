@@ -2,7 +2,7 @@
 FROM amazoncorretto:17
 
 # tzdata 패키지 설치
-RUN yum update && yum install -y tzdata
+RUN yum clean all && yum -y update && yum -y install tzdata
 
 # 타임존 설정 (예: Asia/Seoul)
 ENV TZ=Asia/Seoul
