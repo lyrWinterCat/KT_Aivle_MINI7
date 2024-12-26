@@ -59,7 +59,7 @@ public class Log {
     private String end_time;
 
 
-    @OneToMany(mappedBy = "log2")
+    @OneToMany(mappedBy = "log")
     @JsonManagedReference
     private List<Hospital> hospitals;
 }
