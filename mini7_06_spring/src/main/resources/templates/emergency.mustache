@@ -248,8 +248,9 @@
             var destLat = `${selectedLatLng.lat()}`; // 도착지 좌표 (선택된 마커)
             var destLng = `${selectedLatLng.lng()}`;
 
-            var directionUrl = `http://map.naver.com/index.nhn?slng=${myLng}&slat=${myLat}&stext=내위치&elng=${destLng}&elat=${destLat}&pathType=0&showMap=true&etext=${selectedMarkerId}&menu=route&pathType=1`;
-
+<!--            var directionUrl = `http://map.naver.com/index.nhn?slng=${myLng}&slat=${myLat}&stext=내위치&elng=${destLng}&elat=${destLat}&pathType=1&showMap=true&etext=${selectedMarkerId}&menu=route`;-->
+            // 자동차코드
+                    var directionUrl = `https://map.naver.com/v5/directions/${myLng},${myLat},내위치,PLACE_POI/${destLng},${destLat},${selectedMarkerId},PLACE_POI/-/car?c=${destLng},${destLat},13,0,0,0,dh`;
             console.log("길찾기 URL:", directionUrl);
 
             window.open(directionUrl, '_blank'); // 새 창으로 네이버맵 길찾기 열기
