@@ -13,10 +13,7 @@
                             <small class="card-subtitle">
                                 작성자: <strong>{{username}}</strong> |
                                 {{#formattedUpdateTime}}
-                                    수정 시간: {{formattedUpdateTime}}
-                                {{/formattedUpdateTime}}
-                                {{^formattedUpdateTime}}
-                                    작성 시간: {{formattedCreateTime}}
+                                    작성 시간: {{formattedUpdateTime}}
                                 {{/formattedUpdateTime}}
                             </small>
                         </div>
@@ -31,7 +28,7 @@
                                     <small class="card-subtitle">
                                         작성자: <strong>{{username}}</strong> |
                                         {{#formattedUpdateTime}}
-                                            수정 시간: {{createTime}}
+                                            작성 시간: {{createTime}}
                                         {{/formattedUpdateTime}}
                                     </small>
                                     <div class="d-flex align-items-center mt-2">
