@@ -81,33 +81,12 @@ mini7_project/ <br>
 
 ---
 
-## 🚀 프로젝트 실행 방법
-
-```
-1️⃣ FastAPI 서버 실행 (AI 분석)
-bash
-cd mini7_06_fastapi
-pip install -r requirements.txt
-uvicorn main:app --reload
-
-2️⃣ Spring Boot 서버 실행 (웹 서비스)
-bash
-복사
-편집
-cd mini7_06_spring
-./gradlew bootRun
-3️⃣ Docker 컨테이너 실행
-bash
-복사
-편집
-docker-compose up --build
-```
 
 ## 🤝 기여 방법
-이 레포지토리를 포크(Fork) 합니다.
-새로운 브랜치를 생성합니다. (feature/새로운기능)
-변경 사항을 커밋합니다. (git commit -m "추가된 기능 설명")
-원격 저장소에 푸시합니다. (git push origin feature/새로운기능)
-PR(Pull Request)을 생성하여 변경 사항을 공유합니다.
-✨ 더 나은 응급 대응 시스템을 위한 기여를 환영합니다! 🚀
+이 레포지토리를 포크(Fork) 합니다. <br>
+새로운 브랜치를 생성합니다. (feature/새로운기능) <br>
+변경 사항을 커밋합니다. (git commit -m "추가된 기능 설명") <br>
+원격 저장소에 푸시합니다. (git push origin feature/새로운기능) <br>
+PR(Pull Request)을 생성하여 변경 사항을 공유합니다. <br>
+✨ 더 나은 응급 대응 시스템을 위한 기여를 환영합니다! 🚀 <br>
 
