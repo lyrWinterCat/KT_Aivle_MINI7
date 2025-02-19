@@ -104,7 +104,7 @@ mini7_project/ <br>
 │ ├── Dockerfile # Spring Boot 컨테이너화 설정 <br>
 │ ├── build.gradle # Gradle 빌드 스크립트 <br>
 │ ├── settings.gradle # Gradle 설정 <br>
-│ ├── README.md # 프로젝트 개요 및 문서<br>
+├── README.md # 프로젝트 개요 및 문서<br>
 
 
 ---
