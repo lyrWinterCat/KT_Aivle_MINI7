@@ -101,6 +101,7 @@ bash
 복사
 편집
 docker-compose up --build
+```
 
 ## 🤝 기여 방법
 이 레포지토리를 포크(Fork) 합니다.
