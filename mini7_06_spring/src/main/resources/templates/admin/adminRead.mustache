@@ -1,0 +1,186 @@
+{{> header}}
+{{> nav}}
+
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=t0hj82dtju"></script>
+
+
+<div id="layoutSidenav">
+    {{> sidenav}}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="container text-center py-4">
+                    <div class="row m">
+                        <div class="text-start p-3 my-3 ">
+                            <h3>History</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="table-responsive"> <!-- 테이블에 가로 스크롤 추가 -->
+                            <table class="table table-hover ">
+                                <thead style="background-color: #afcffc">
+                                <tr>
+                                    <th class="text-nowrap">ID</th>
+                                    <th class="text-nowrap">조회시각</th>
+                                    <th class="text-nowrap">신고위치</th>
+                                    <th class="text-nowrap">응급등급</th>
+                                    <th class="text-nowrap">병원</th>
+                                    <th class="text-nowrap">병원위치</th>
+                                    <th class="text-nowrap">출발시각</th>
+                                    <th class="text-nowrap">도착시각</th>
+                                    <th class="text-nowrap">예상시간</th>
+                                    <th class="text-nowrap">실제시간</th>
+                                </tr>
+                                </thead>
+                                <tbody id="data-table">
+                                {{#logPage.content}}
+                                    <!-- 데이터 반복 -->
+                                    <tr data-pk="{{id}}" data-input-text="{{input_text}}"
+                                        data-description="{{description}}">
+                                        <td>{{id}}</td>
+                                        <td>{{datetime}}</td>
+                                        <td>{{startAddress}}</td>
+                                        <td>{{emergencyGrade}}</td>
+                                        <td>{{#hospitalName}}{{hospitalName}}{{/hospitalName}}{{^hospitalName}}
+                                            --{{/hospitalName}}</td>
+                                        <td>{{#address}}{{address}}{{/address}}{{^address}}--{{/address}}</td>
+                                        <td>{{#start_time}}{{start_time}}{{/start_time}}{{^start_time}}
+                                            --{{/start_time}}</td>
+                                        <td>{{#end_time}}{{end_time}}{{/end_time}}{{^end_time}}--{{/end_time}}</td>
+                                        <td>{{#duration}}{{duration}}분{{/duration}}{{^duration}}--{{/duration}}</td>
+                                        <td>{{#real_duration}}{{real_duration}}분{{/real_duration}}{{^real_duration}}
+                                            --{{/real_duration}}</td>
+                                    </tr>
+                                {{/logPage.content}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 페이징 버튼 -->
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item {{^hasPrev}}disabled{{/hasPrev}}">
+                                <a class="page-link" href="?page={{prev}}" tabindex="-1" aria-disabled="true">이전</a>
+                            </li>
+                            {{#pageNumbers}}
+                                <li class="page-item {{#isCurrentPage}}active{{/isCurrentPage}}">
+                                    <a class="page-link" href="?page={{pageNumber}}">{{pageNumber}}</a>
+                                </li>
+                            {{/pageNumbers}}
+                            <li class="page-item {{^hasNext}}disabled{{/hasNext}}">
+                                <a class="page-link" href="?page={{next}}">다음</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+
+                    <!-- 추천 병원 리스트 -->
+                    <div class="row mt-4">
+                        <div id="recommended-hospitals" class="container rounded" style="background-color:#51a8e80d;"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        {{> footer}}
+    </div>
+</div>
+
+<script>
+
+    // 테이블 행 클릭 이벤트
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('#data-table tr').forEach(function (row) {
+            row.addEventListener('click', function () {
+                var pk = this.getAttribute('data-pk'); // PK 가져오기
+                var inputText = this.getAttribute('data-input-text'); // inputText 가져오기
+                var description = this.getAttribute('data-description');
+
+                console.log("선택된 PK:", pk);
+
+                // 추천 병원 리스트 가져오기
+                fetchRecommendedHospitals(pk, inputText, description);
+
+
+            });
+        });
+    });
+
+    // 추천 병원 리스트 가져오기 함수
+    function fetchRecommendedHospitals(pk, inputText, description) {
+        fetch(`/log-recommended-hospitals?pk=${pk}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear existing content
+                    var container = document.getElementById('recommended-hospitals');
+                    container.innerHTML = '';
+
+                    var inputTextDisplay = `
+                        <div class="text-start border p-3 my-3 rounded-3">
+                            <div><h4>InputText</h4><div>
+                            <div class="ps-5 mt-3"><p class="mb-0" style="font-size: 15px">${inputText}</p><div>
+                        </div>`;
+                    container.innerHTML += inputTextDisplay;
+
+                    var descriptionDisplay = `
+                        <div class="text-start border p-3 my-3 rounded-3">
+                            <div><h4>Description</h4><div>
+                            <div class="ps-5 mt-3"><p class="mb-0" style="font-size: 15px">${description}</p><div>
+                        </div>`;
+                    container.innerHTML += descriptionDisplay;
+
+
+                    var tableHeader = `
+                    <div class="text-start border p-3 my-3 rounded-3">
+                            <div><h4>Recommended Hospital</h4><div>
+
+                    </div>
+<div class="table-responsive"> <!-- 테이블에 가로 스크롤 추가 -->
+                <table class="table table-hover mt-3 text-center">
+                    <thead style="background-color: #afcffc">
+                        <tr>
+                            <th>#</th>
+                            <th class="text-nowrap">병원 이름</th>
+                            <th class="text-nowrap">주소</th>
+                            <th class="text-nowrap">전화번호1</th>
+                            <th class="text-nowrap">전화번호2</th>
+                            <th class="text-nowrap">유형</th>
+                            <th class="text-nowrap" >거리</th>
+                            <th class="text-nowrap">예상 시간</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                    var tableFooter = `
+                    </tbody>
+                </table>
+                </div>`
+                    ;
+
+
+                    var tableRows = '';
+                    data.forEach((hospital, index) => {
+                        tableRows += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${hospital.name}</td>
+                        <td>${hospital.address}</td>
+                        <td>${hospital.tel1 || '--'}</td>
+                        <td>${hospital.tel2 || '--'}</td>
+                        <td>${hospital.type}</td>
+                        <td>${hospital.distance}km</td>
+                        <td>${hospital.duration}분</td>
+                    </tr>`;
+                    });
+
+                    container.innerHTML += tableHeader + tableRows + tableFooter;
+
+                    //scroll
+                    const recommendHospitalDiv = document.getElementById('recommended-hospitals');
+                    recommendHospitalDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                })
+                .catch(error => console.error("Error fetching recommended hospitals:", error));
+    }
+
+</script>
+

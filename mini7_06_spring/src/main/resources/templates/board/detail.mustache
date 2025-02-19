@@ -1,0 +1,60 @@
+{{> header}}
+{{> nav}}
+<div id="layoutSidenav">
+    {{> sidenav}}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container mt-4" style="max-width: 900px; margin: auto;">
+                {{#board}}
+                    <div class="card mb-4 shadow-sm">
+                        <!-- Header Section -->
+                        <div class="card-header">
+                            <h2 class="card-title mb-0">{{title}}</h2>
+                            <small class="card-subtitle">
+                                작성자: <strong>{{username}}</strong> |
+                                {{#formattedUpdateTime}}
+                                    작성 시간: {{formattedUpdateTime}}
+                                {{/formattedUpdateTime}}
+                            </small>
+                        </div>
+
+                        <!-- Body Section -->
+                        <div class="card-body"; style="background-color: #f8f9fa;">
+                            <p class="card-text" style="white-space: pre-wrap;">{{content}}</p>
+                            <hr>
+                            <h5>댓글</h5>
+                            {{#comments}}
+                                <div class="mb-3">
+                                    <small class="card-subtitle">
+                                        작성자: <strong>{{username}}</strong> |
+                                        {{#formattedUpdateTime}}
+                                            작성 시간: {{createTime}}
+                                        {{/formattedUpdateTime}}
+                                    </small>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <p class="me-auto">{{content}}</p>
+                                        <form action="/comment/delete/{{CommentId}}" method="post" class="d-flex">
+                                            <!-- Password Input -->
+                                            <input type="password" name="password" class="form-control me-2" placeholder="Enter password" required>
+                                            <button type="submit" class="btn btn-outline-danger" style="white-space: nowrap;">삭제</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr>
+                            {{/comments}}
+                            {{>comment/new}}
+                        </div>
+
+                        <!-- Footer Section -->
+                        <div class="card-footer text-end bg-light">
+                            <a href="/board/{{boardId}}/edit" class="btn btn-outline-secondary me-2">수정</a>
+                            <a href="/board/{{boardId}}/delete" class="btn btn-outline-danger me-2">삭제</a>
+                            <a href="/board/list" class="btn btn-outline-primary">게시판 목록</a>
+                        </div>
+                    </div>
+                {{/board}}
+            </div>
+        </main>
+    </div>
+</div>
+{{> footer}}

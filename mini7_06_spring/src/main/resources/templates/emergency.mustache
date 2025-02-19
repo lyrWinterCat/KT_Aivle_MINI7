@@ -1,0 +1,313 @@
+{{> header}}
+{{> nav}}
+
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{mapClientId}}"></script>
+<link rel="stylesheet" href="/css/emergency.css">
+
+<div id="layoutSidenav">
+    {{> sidenav}}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4" style="position: relative;">
+                <!--my content-->
+                <div class="container text-center p-4">
+                    <div class="row justify-content-center align-items-center p-3">
+                        <!-- 응급등급 섹션 -->
+                        <div class="col-3 d-flex flex-column justify-content-center align-items-center border-end">
+                            <div class="row">
+                                <h6 class="text-center">응급등급</h6>
+                            </div>
+                            <div class="row my-3">
+                                <div class="em_cls_circle shadow">
+                                    {{emergencyLevel}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 아이콘 및 텍스트 섹션 -->
+                        <div class="col d-flex flex-column justify-content-center">
+                            <div class="row w-100 align-items-center">
+                                <div class="col-3 text-center">
+
+                                    <i class="fa-solid fa-headset" style="font-size: 60px;"></i>
+
+                                </div>
+                                <div class="col">
+                                    <div class="speech-bubble shadow text-start">
+                                        {{{promptContent}}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 병원 테이블 -->
+                    <div class="row justify-content-center align-items-center my-3">
+                        <!-- 반응형 테이블 -->
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover p-4">
+                                <thead style="background-color: darkseagreen">
+                                <tr>
+                                    <th scope="col" class="text-nowrap"></th>
+                                    <th scope="col" class="text-nowrap">병원 이름</th>
+                                    <th scope="col" class="text-nowrap">주소</th>
+                                    <th scope="col" class="text-nowrap">전화번호1</th>
+                                    <th scope="col" class="text-nowrap">전화번호2</th>
+                                    <th scope="col" class="text-nowrap">센터</th>
+                                    <th scope="col" class="text-nowrap">거리</th>
+                                    <th scope="col" class="text-nowrap">예상 시간</th>
+                                </tr>
+                                </thead>
+                                {{#hospitalList}}
+                                    <tbody>
+                                    <!-- 예시 데이터 -->
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>{{hospitalName}}</td>
+                                        <td>{{address}}</td>
+                                        <td>{{phoneNumber1}}</td>
+                                        <td>{{phoneNumber3}}</td>
+                                        <td>{{emergencyMedicalInstitutionType}}</td>
+                                        <td>{{distance}}km</td>
+                                        <td>{{duration}}분</td>
+                                    </tr>
+                                    </tbody>
+                                {{/hospitalList}}
+                            </table>
+                        </div>
+
+                        <!-- 지도 -->
+                        <div class="row justify-content-center align-items-center my-3">
+                            <div class="text-start mb-3" style="width:90%;">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                신고자 현재 위치 : {{source_addr}}
+                            </div>
+                            <div id="map" style="width:90%;height:300px;"></div>
+                        </div>
+
+                        <!-- 버튼 -->
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col text-center">
+                                <p style="color: dimgray">지도에서 응급실을 선택 후 출발 버튼을 눌러주세요!</p>
+                                <!-- 출발 및 도착 버튼 -->
+                                <button id="startButton" class="btn btn-primary" disabled>출발</button>
+                                <button id="endButton" class="btn btn-success" disabled>도착</button>
+                                <button id="naverMapButton" class="btn btn-warning" disabled>길찾기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--커스텀 Alert-->
+                <div id="customAlert"
+                     style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+         background-color:#f1f6f3; color:#000000; padding:20px; border:2px solid #638660;
+         border-radius:5px; opacity:0; transition: opacity 0.3s ease-in-out;">
+                    <p id="arrive_hospital"></p>
+
+                    <div class="text-end">
+                        <p id="move_board" style="color: dimgray; font-size: 10px;"></p>
+                        <button onclick="closeAlert()" class="btn btn-secondary">닫기</button>
+                        <button class="btn btn-success"><a class="page-link" href="/board/new">후기 작성</a></button>
+                    </div>
+
+                </div>
+        </main>
+
+
+
+        {{> footer}}
+    </div>
+</div>
+
+<script>
+    //커스컴 alert
+    // 커스텀 alert 표시 함수
+    function showCustomAlert(message1, message2) {
+        const alertBox = document.getElementById("customAlert");
+
+        // 메시지 설정
+        document.getElementById("arrive_hospital").innerText = message1;
+        document.getElementById("move_board").innerText = message2;
+
+        // 알림 창 표시 (애니메이션 시작)
+        alertBox.style.display = "block"; // 먼저 display를 block으로 설정
+        setTimeout(() => {
+            alertBox.style.opacity = "1"; // 투명도를 1로 설정하여 나타나도록 함
+        }, 5); // 약간의 지연을 주어 transition 적용
+    }
+
+    // 커스텀 alert 닫기 함수
+    function closeAlert() {
+        const alertBox = document.getElementById("customAlert");
+
+        // 애니메이션 적용 (닫히는 효과)
+        alertBox.style.opacity = "0"; // 투명도를 0으로 설정하여 사라지도록 함
+
+        // 애니메이션 완료 후 display:none 처리
+        setTimeout(() => {
+            alertBox.style.display = "none";
+        }, 300); // transition 시간과 동일하게 설정 (0.5초)
+    }
+
+
+</script>
+
+<script>
+
+    var myLat = {{myLat}}; // 위도
+    var myLng = {{myLng}}; // 경도
+    var clientId = {{client_id}};
+
+    // 네이버 지도 초기화
+    var mapOptions = {
+        center: new naver.maps.LatLng(myLat, myLng), //내위치로 변경 예정
+        zoom: 12
+    };
+    var map = new naver.maps.Map('map', mapOptions);
+
+    var markers = [];
+        {{#hospitalList}}
+        markers.push({
+            id: "{{hospitalName}}", // hospitalName을 문자열로 처리
+            position: new naver.maps.LatLng({{latitude}}, {{longitude}}),
+            duration: "{{duration}}",
+            address: "{{address}}"
+
+        });
+        {{/hospitalList}}
+
+
+    var selectedMarkerId = null; // 선택된 마커 ID 저장
+    var selectedLatLng = null; // 선택된 마커의 위도와 경도 저장
+    var selectedAddr = null;
+    var selectedDuration = null;
+
+    // InfoWindow 객체 생성
+    var infoWindow = new naver.maps.InfoWindow({
+        content: '', // 초기에는 빈 내용
+        backgroundColor: "#fff",
+        borderColor: "#f86e6e",
+        borderWidth: 2,
+        anchorSize: new naver.maps.Size(15, 15),
+        anchorSkew: true,
+        pixelOffset: new naver.maps.Point(10, -10)
+    });
+
+    var HOME_PATH = window.HOME_PATH || '.';
+
+    markers.forEach(function (markerData) {
+        var marker = new naver.maps.Marker({
+            position: markerData.position,
+            map: map,
+            title: markerData.id,
+            icon: {
+                url: '/img/hospital_marker.png',
+                size: new naver.maps.Size(50, 52),
+                origin: new naver.maps.Point(0, 0),
+                anchor: new naver.maps.Point(25, 26)
+            }
+        });
+
+        // 마커 클릭 이벤트
+        naver.maps.Event.addListener(marker, 'click', function () {
+            selectedMarkerId = markerData.id; // 선택된 마커 ID 저장
+            selectedLatLng = markerData.position; // 선택된 위도/경도 저장
+            selectedDuration = markerData.duration;
+            selectedAddr = markerData.address;
+
+            console.log("마커 선택됨:", selectedMarkerId);
+
+            // 출발 버튼 활성화
+            document.getElementById('startButton').disabled = false;
+
+            // 도착 버튼 비활성화 (출발 버튼을 누르기 전까지)
+            document.getElementById('endButton').disabled = true;
+
+            // 구글맵 길찾기 버튼 활성화
+            document.getElementById('naverMapButton').disabled = false;
+
+            // InfoWindow에 마커 ID 표시
+            infoWindow.setContent(`<strong>${selectedMarkerId}</strong>`); // InfoWindow 내용 설정
+            infoWindow.open(map, marker); // InfoWindow 열기
+        });
+    });
+
+    // 출발 버튼 클릭 이벤트
+    document.getElementById('startButton').addEventListener('click', function () {
+        if (selectedMarkerId) {
+            console.log("출발 버튼 클릭됨. 선택된 마커 ID:", selectedMarkerId);
+
+            // 도착 버튼 활성화
+            document.getElementById('endButton').disabled = false;
+
+            // 출발 버튼 비활성화 (한 번만 사용 가능하도록)
+            document.getElementById('startButton').disabled = true;
+
+            // AJAX 요청으로 데이터 전송
+            fetch('/save-start-location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    clientId: clientId,
+                    hospitalName: selectedMarkerId,
+                    duration: selectedDuration,
+                    address: selectedAddr
+                })
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error("서버 응답 실패");
+                        }
+                    })
+        }
+    });
+
+    // 도착 버튼 클릭 이벤트
+    document.getElementById('endButton').addEventListener('click', function () {
+        console.log("도착 버튼 클릭됨.");
+        //alert(selectedMarkerId+" 도착 완료!");
+        showCustomAlert(selectedMarkerId + " 도착 완료!", "후기를 작성해 주세요.");
+
+        // GET 방식으로 데이터 전송
+        const url = new URL('/save-end-location', window.location.origin); //
+        url.searchParams.append('clientId', clientId); // 쿼리 매개변수 추가
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("서버 응답 실패");
+                    }
+                })
+                .then(data => console.log(data)) // 성공적으로 응답 처리
+                .catch(error => console.error(error)); // 에러 처리
+
+    });
+
+    // 네이버맵 길찾기 버튼 클릭 이벤트
+    document.getElementById('naverMapButton').addEventListener('click', function () {
+        if (selectedLatLng) {
+            var destLat = `${selectedLatLng.lat()}`; // 도착지 좌표 (선택된 마커)
+            var destLng = `${selectedLatLng.lng()}`;
+
+<!--            var directionUrl = `http://map.naver.com/index.nhn?slng=${myLng}&slat=${myLat}&stext=내위치&elng=${destLng}&elat=${destLat}&pathType=1&showMap=true&etext=${selectedMarkerId}&menu=route`;-->
+            // 자동차코드
+                    var directionUrl = `https://map.naver.com/v5/directions/${myLng},${myLat},내위치,PLACE_POI/${destLng},${destLat},${selectedMarkerId},PLACE_POI/-/car?c=${destLng},${destLat},13,0,0,0,dh`;
+            console.log("길찾기 URL:", directionUrl);
+
+            window.open(directionUrl, '_blank'); // 새 창으로 네이버맵 길찾기 열기
+        }
+    });
+</script>
+

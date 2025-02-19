@@ -21,9 +21,8 @@ class Project0606:
         self.conf = conf
 
         # openai api_key Load 작업
-        with open(self.conf['api_file_path'], 'r') as f:
-            openai.api_key = f.readline().strip()
-            os.environ['OPENAI_API_KEY'] = openai.api_key
+        openai.api_key = self.conf['api']
+        os.environ['OPENAI_API_KEY'] = openai.api_key
 
         # audio_to_text에서 사용할 client 생성
         self.client_stt = OpenAI()
@@ -36,6 +35,19 @@ class Project0606:
 
         # duty_list 불러오기
         self.duty_df = pd.read_csv(self.conf['duty_path'])
+        
+        # summary_system_role 읽기
+        with open(self.conf['summary_system_role_path'], 'r', encoding='utf-8') as file:
+            content = file.read()
+            self.conf['summary_system_role'] = content
+
+        with open(self.conf['summary_emergency_path'], 'r', encoding='utf-8') as file:
+            content = file.read()
+            self.conf['summary_emergency'] = content
+            
+        with open(self.conf['summary_not_emergency_path'], 'r', encoding='utf-8') as file:
+            content = file.read()
+            self.conf['summary_not_emergency'] = content
 
     def audio_to_text(self, path):
         # 오디오 파일을 읽어서, 위스퍼를 사용한 변환
@@ -50,14 +62,16 @@ class Project0606:
         # 결과 반환
         return transcript
 
-    def text_summary(self, input_txt):
+    # type에는 다음과 같이 넣으면 된다.
+    # summary_system_role, summary_emergency, summary_not_emergency
+    def text_summary(self, input_txt, type='summary_system_role'):
         # 입력데이터를 GPT-3.5-turbo에 전달하고 답변 받아오기
         response = self.client_summary.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {
                     "role": "system",
-                    "content": self.conf['summary_system_role']
+                    "content": self.conf[type]
                 },
                 {
                     "role": "user",
@@ -94,6 +108,36 @@ class Project0606:
         dist_series = self.duty_df[['wgs84lat', 'wgs84lon']].apply(
             lambda x: haversine(current_xy, (x['wgs84lat'], x['wgs84lon']), unit='km'), axis=1)
         return self.duty_df.loc[dist_series.sort_values()[:self.conf['haversine_count']].index]
+    
+    def get_naver_map_addr(self, current_xy):
+        url = "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc"
+        headers = {
+            "X-NCP-APIGW-API-KEY-ID": self.conf['naver_client_id'],
+            "X-NCP-APIGW-API-KEY": self.conf['naver_client_secret'],
+        }
+        params = {
+            "coords": f"{current_xy[1]},{current_xy[0]}",  # 출발지 (경도, 위도)
+            "orders": 'addr',
+            "output": 'json'
+        }
+
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code != 200:
+            return False
+
+        response = response.json()
+        print(response)
+        addr = '주소 확인 불가'
+        if response['status']['code'] == 0:
+            region = response['results'][0]['region']
+            land = response['results'][0]['land']
+            addr = f"{region['area1']['name']} {region['area2']['name']} {region['area3']['name']}"
+            addr += f" {region['area4']['name']}" if region['area4']['name'] != '' else ""
+            addr += f" 산" if land['type'] == '2' else ""
+            addr += f" {land['number1']}" if land['number1'] != '' else ""
+            addr += f"-{land['number2']}" if land['number2'] != '' else ""
+
+        return addr
 
     def get_naver_map_dist(self, current_xy, dest_lat, dest_lng):
         url = "https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving"
@@ -114,17 +158,31 @@ class Project0606:
 
         response = response.json()
         # 현재위치와 동일 (즉 병원이 수m 이내)
-        dist = 0
+        # print(response)
+
         if response['code'] == 0:
-            dist = response['route']['trafast'][0]['summary']['distance']  # m(미터)
-        return dist
+            result = {
+                'dist': response['route']['trafast'][0]['summary']['distance'],
+                'duration': response['route']['trafast'][0]['summary']['duration']
+            }
+        else:
+            result = {
+                'dist': 0,
+                'duration': 0
+            }
+        return result
+    
+    def get_naver_data(self, row, current_xy):
+        dist_result = self.get_naver_map_dist(current_xy, row['wgs84lat'], row['wgs84lon'])
+        
+        row['road_distance'] = dist_result['dist']
+        row['road_duration'] = dist_result['duration']
+        return row
     
     def recommend_hospital(self, current_xy):
         result_dist = self.calc_haversine(current_xy)
-        result_dist['road_distance'] = result_dist.apply(
-            lambda x: self.get_naver_map_dist(current_xy, x['wgs84lat'], x['wgs84lon']),
-            axis=1
-        )
+        result_dist = result_dist.apply(self.get_naver_data, axis=1, args=(current_xy,))
+        # print(result_dist)
         return result_dist.sort_values(by='road_distance')[:self.conf['naver_count']]
 
     def proc_pipeline(self, file_paths, current_xy_list, progress=True):
@@ -158,12 +216,15 @@ class Project0606:
         result_predict = self.predict(result_summary)
         result_predict = list(result_predict)
         result_predict[1] = result_predict[1].numpy().tolist()[0]
-        print(result_predict)
+        # print(result_predict)
         result_duty = self.recommend_hospital(current_xy)
+        result_addr = self.get_naver_map_addr(current_xy)
+        
         result = {
             'transcript': request_txt,
             'summary': result_summary,
             'predict': result_predict,
+            'addr': result_addr,
             'duty': result_duty.to_dict(orient="records")
         }
         

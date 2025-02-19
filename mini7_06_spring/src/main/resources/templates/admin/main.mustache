@@ -1,0 +1,53 @@
+{{> header}}
+{{> nav}}
+{{> sidenav}}
+<h1>Hospital Logs</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>등록번호</th>
+        <th>날짜</th>
+        <th>입력위도</th>
+        <th>입력경도</th>
+        <th>응급등급</th>
+        <th>증상요약</th>
+        <th>병운</th>
+        <th>병원위치</th>
+        <th>예상이동시간</th>
+        <th>실제이동시간</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 데이터 반복 -->
+    <tr th:each="log, iterStat : ${logList.content}">
+        <td th:text="${iterStat.index + 1}"></td>
+        <td th:text="${log.id}"></td>
+        <td th:text="${log.datetime}"></td>
+        <td th:text="${log.latitude}"></td>
+        <td th:text="${log.longitude}"></td>
+        <td th:text="${log.startAddress}"></td>
+        <td th:text="${log.emergencyGrade}"></td>
+        <td th:text="${log.description}"></td>
+        <td th:text="${log.hospitalName}"></td>
+        <td th:text="${log.address}"></td>
+        <td th:text="${log.duration}"></td>
+        <td th:text="${log.real_duration}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 페이지네이션 -->
+<div>
+    <button th:if="${logList.hasPrevious()}"
+            th:href="@{/admin(page=${logList.number - 1})}">Previous</button>
+    <span th:text="${logList.number + 1} + '/' + ${logList.totalPages}"></span>
+    <button th:if="${logList.hasNext()}"
+            th:href="@{/admin(page=${logList.number + 1})}">Next</button>
+</div>
+{{> footer}}
+</div>
+</div>
+</body>
+</html>
