@@ -4,6 +4,10 @@
 본 프로젝트는 응급상황을 신속하게 인식하고, 적절한 응급실과 연계하는 웹 서비스 포탈입니다.  
 자연어 처리(NLP) 및 음성 데이터를 활용하여 응급 여부를 판단하며, 네이버 지도 API를 사용해 가까운 응급실을 추천합니다.
 
+### 🎬 시연 영상
+[![시연 영상](https://raw.githubusercontent.com/lyrWinterCat/KT_Aivle_MINI7/main/EmergencyReport.png)](https://www.youtube.com/watch?v=bYSpKPcFpw0)
+
+
 ---
 
 ## 🛠 사용 기술
