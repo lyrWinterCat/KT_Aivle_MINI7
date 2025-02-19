@@ -13,7 +13,7 @@
 ## 🛠 사용 기술
 
 ### **📌 개발 도구**
-- **IDE**: Visual Studio Code
+- **IDE**: Visual Studio Code, InteliJ
 - **CI/CD & 컨테이너화**: Docker
 - **버전 관리**: Git, GitHub
 
